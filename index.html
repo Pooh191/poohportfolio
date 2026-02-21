@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio | Personal Branding</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Kanit:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Typed.js -->
+    <script src="https://unpkg.com/typed.js@2.1.0/dist/typed.umd.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+</head>
+
+<body class="loading">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scrollBar"></div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader-content">
+            <div class="loader-circle"></div>
+            <div class="loader-text text-gradient fw-bold mt-3">THANAKORN</div>
+        </div>
+    </div>
+
+    <!-- Floating Socials -->
+    <div class="floating-socials d-none d-lg-flex">
+        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="#" class="social-link"><i class="fab fa-line"></i></a>
+        <div class="social-line"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">PORTFOLIO</a>
+
+            <div class="d-flex align-items-center order-lg-last ms-2">
+                <button id="dark-mode-toggle" class="btn btn-link text-dark p-0 me-3" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="#home">หน้าแรก</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#about">ข้อมูลส่วนตัว</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#education">การศึกษา</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills">ทักษะ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#news">ข่าวสาร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience">ผลงาน</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certificates">เกียรติบัตร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact">ติดต่อ</a></li>
+                    <li class="nav-item admin-only d-none"><a class="nav-link text-primary fw-bold" href="#"
+                            data-bs-toggle="modal" data-bs-target="#viewMessagesModal"><i
+                                class="fas fa-envelope me-1"></i>ข้อความ</a></li>
+                    <li class="nav-item admin-only d-none"><a class="nav-link text-danger fw-bold" href="#"
+                            id="logoutBtn">ออกจากระบบ</a></li>
+                    <li class="nav-item guest-only"><a class="nav-link text-primary fw-bold" href="#"
+                            data-bs-toggle="modal" data-bs-target="#loginModal"><i
+                                class="fas fa-lock me-1"></i>Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Section 1: Personal Info (Hero) -->
+    <header id="home" class="hero-section d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6" data-aos="fade-right">
+                    <h5 class="text-primary fw-bold mb-3 text-uppercase tracking-widest" data-aos="fade-up">Portfolio
+                        for University Admission</h5>
+                    <h1 class="display-3 fw-bold mb-2" data-aos="fade-up" data-aos-delay="100"><span
+                            class="text-gradient">แฟ้มสะสมผลงาน</span></h1>
+                    <h2 class="h2 mb-4" data-aos="fade-up" data-aos-delay="200">นายธนากร แซ่จอง | <span
+                            id="typing-text"></span></h2>
+                    <p class="lead mb-5 text-secondary" data-aos="fade-up" data-aos-delay="300">
+                        "มุ่งมั่นพัฒนาทักษะเพื่อการเป็นนวัตกรในอนาคต เตรียมความพร้อมสู่ระดับอุดมศึกษา"</p>
+                    <div class="d-flex gap-3 hero-btns" data-aos="fade-up" data-aos-delay="400">
+                        <a href="#experience"
+                            class="btn btn-primary-gradient btn-lg px-5 py-3 rounded-pill shadow-lg">ดูผลงาน
+                            (Project)</a>
+                        <a href="#about" class="btn btn-outline-custom btn-lg px-5 py-3 rounded-pill">ข้อมูลส่วนตัว</a>
+                    </div>
+                </div>
+                <div class="col-lg-6 mt-5 mt-lg-0 text-center" data-aos="zoom-in">
+                    <div class="profile-img-wrapper">
+                        <img src="img/Profile.png" alt="Profile" class="img-fluid rounded-circle shadow-lg profile-img">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section: Preface & Statement of Purpose (คำนำ & เรียงความ) -->
+    <section id="statement" class="section-padding">
+        <div class="section-glow glow-top-right"></div>
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="card border-0 shadow-lg p-5 bg-primary text-white h-100 overflow-hidden position-relative"
+                        style="border-radius: 30px;">
+                        <div class="position-absolute top-0 end-0 p-4 opacity-10">
+                            <i class="fas fa-quote-right display-1"></i>
+                        </div>
+                        <h3 class="fw-bold mb-4">คำนำ (Preface)</h3>
+                        <p class="opacity-90 fs-5 mb-4">แฟ้มสะสมผลงาน (Portfolio) เล่มนี้
+                            ข้าพเจ้าจัดทำขึ้นเพื่อนำเสนอทักษะและความมุ่งมั่นในสายงาน
+                            <strong>ด้านการศึกษาและวิทยาการคอมพิวเตอร์</strong>
+                        </p>
+                        <p class="opacity-90">
+                            ข้าพเจ้าหวังว่าข้อมูลเหล่านี้จะเป็นประโยชน์ต่อคณะกรรมการในการพิจารณารับข้าพเจ้าเข้าศึกษาต่อ
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <h2 class="section-title text-start mb-4">🎓 เรียงความแนะนำตัว (Statement of Purpose)</h2>
+                    <div class="sop-content border-start border-primary border-5">
+                        <p class="fs-5 mb-4">"ในโลกยุคดิจิทัล การศึกษาไม่ได้จำกัดอยู่เพียงในตำราและห้องเรียน
+                            ข้าพเจ้ามีความตั้งใจที่จะเป็น <strong>นักการศึกษาด้านคอมพิวเตอร์</strong>
+                            ที่สามารถถ่ายทอดเทคโนโลยีให้เข้ากับบริบทการเรียนรู้ของไทย..."</p>
+                        <p class="mb-0 fs-6 text-muted">"การรวมทักษะการสอนและทักษะด้านโปรแกรมมิ่งเข้าด้วยกัน
+                            คือเป้าหมายสูงสุดของข้าพเจ้า เพื่อสร้างนวัตกรรมการเรียนรู้ที่จะขับเคลื่อนเยาวชนในอนาคต..."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Tech Stack Marquee -->
+    <div class="tech-marquee mb-5">
+        <div class="marquee-content">
+            <!-- First Set -->
+            <div class="tech-item"><i class="fab fa-html5 text-danger"></i><span>HTML5</span></div>
+            <div class="tech-item"><i class="fab fa-css3-alt text-primary"></i><span>CSS3</span></div>
+            <div class="tech-item"><i class="fab fa-js text-warning"></i><span>JavaScript</span></div>
+            <div class="tech-item"><i class="fab fa-python text-info"></i><span>Python</span></div>
+            <div class="tech-item"><i class="fab fa-microsoft text-primary"></i><span>MS Office</span></div>
+            <div class="tech-item"><i class="fas fa-code text-success"></i><span>Algorithm</span></div>
+            <div class="tech-item"><i class="fas fa-chalkboard-teacher text-secondary"></i><span>Teaching</span></div>
+            <!-- Duplicate for Loop -->
+            <div class="tech-item"><i class="fab fa-html5 text-danger"></i><span>HTML5</span></div>
+            <div class="tech-item"><i class="fab fa-css3-alt text-primary"></i><span>CSS3</span></div>
+            <div class="tech-item"><i class="fab fa-js text-warning"></i><span>JavaScript</span></div>
+            <div class="tech-item"><i class="fab fa-python text-info"></i><span>Python</span></div>
+            <div class="tech-item"><i class="fab fa-microsoft text-primary"></i><span>MS Office</span></div>
+            <div class="tech-item"><i class="fas fa-code text-success"></i><span>Algorithm</span></div>
+            <div class="tech-item"><i class="fas fa-chalkboard-teacher text-secondary"></i><span>Teaching</span></div>
+        </div>
+    </div>
+
+    <!-- Section 2: Education & GPAX -->
+    <section id="education" class="section-padding">
+        <div class="section-glow glow-bottom-left"></div>
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">🎓 ประวัติการศึกษา (Education)</h2>
+                <div class="title-line"></div>
+            </div>
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6 text-center" data-aos="fade-right">
+                    <div
+                        class="gpax-card p-5 shadow-sm rounded-4 border-bottom border-primary border-5 position-relative">
+                        <div class="admin-only d-none position-absolute top-0 end-0 p-3">
+                            <button class="btn btn-sm btn-outline-primary rounded-circle" data-bs-toggle="modal"
+                                data-bs-target="#editGpaxModal">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                        <h4 class="fw-bold mb-3">ผลการเรียนรวม (GPAX)</h4>
+                        <div class="gpax-inner mb-3">
+                            <span class="display-1 fw-bold text-gradient counter" data-target="0.00"
+                                id="gpax-value">0.00</span>
+                        </div>
+                        <p class="text-muted mb-0">สะสม 5 ภาคเรียนแรก</p>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="timeline-v2">
+                        <div
+                            class="timeline-item-v2 pb-4 mb-4 border-start border-2 border-primary ps-4 position-relative">
+                            <div class="dot-v2"></div>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="img/SWK-LogoNoBG.png" alt="โรงเรียนสุรวิทยาคาร" class="school-logo-img me-3">
+                                <h5 class="fw-bold fs-4 mb-0">มัธยมศึกษาตอนปลาย (ม.4-6)</h5>
+                            </div>
+                            <p class="text-primary fw-bold mb-1">โรงเรียนสุรวิทยาคาร</p>
+                            <p class="text-muted small">แผนการเรียน วิทยาศาสตร์ - คณิตศาสตร์ - เทคโนโลยี</p>
+                        </div>
+                        <div class="timeline-item-v2 border-start border-2 border-primary ps-4 position-relative">
+                            <div class="dot-v2"></div>
+                            <div class="d-flex align-items-center mb-2">
+                                <img src="img/SWK-LogoNoBG.png" alt="โรงเรียนสุรวิทยาคาร" class="school-logo-img me-3">
+                                <h5 class="fw-bold fs-4 mb-0">มัธยมศึกษาตอนต้น (ม.1-3)</h5>
+                            </div>
+                            <p class="text-muted mb-1">โรงเรียนสุรวิทยาคาร</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Section 3: Skills -->
+    <section id="skills" class="section-padding">
+        <div class="section-glow glow-top-right"></div>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-up">
+                <div>
+                    <h2 class="section-title text-start mb-0">🛠️ ทักษะและความสามารถ</h2>
+                    <div class="title-line ms-0 mt-2"></div>
+                </div>
+                <button class="btn btn-outline-primary rounded-pill px-4 admin-only d-none" data-bs-toggle="modal"
+                    data-bs-target="#editSkillsModal">
+                    <i class="fas fa-edit me-2"></i>จัดการทักษะ
+                </button>
+            </div>
+            <div class="row">
+                <!-- Hard Skills -->
+                <div class="col-md-6 mb-4" data-aos="fade-right">
+                    <h3 class="h4 mb-4 fw-bold"><i class="fas fa-laptop-code text-primary me-2"></i> Hard Skills</h3>
+                    <div id="hard-skills-container">
+                        <!-- Skill items will be loaded here -->
+                        <div class="text-center py-3 text-muted small">กำลังโหลด...</div>
+                    </div>
+                </div>
+                <!-- Soft Skills -->
+                <div class="col-md-6 mb-4" data-aos="fade-left">
+                    <h3 class="h4 mb-4 fw-bold"><i class="fas fa-users text-primary me-2"></i> Soft Skills</h3>
+                    <div class="row g-3" id="soft-skills-container">
+                        <!-- Soft skill cards will be loaded here -->
+                        <div class="col-12 text-center py-3 text-muted small">กำลังโหลด...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: News & Announcements (Dynamic from Firebase) -->
+    <section id="news" class="section-padding bg-light">
+        <div class="section-glow glow-bottom-left"></div>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-up">
+                <div>
+                    <h2 class="section-title text-start mb-0">📢 ข่าวสารและประกาศ</h2>
+                    <div class="title-line ms-0 mt-2"></div>
+                </div>
+                <button class="btn btn-primary-gradient rounded-pill px-4 admin-only d-none" data-bs-toggle="modal"
+                    data-bs-target="#addNewsModal">
+                    <i class="fas fa-plus me-2"></i>เพิ่มข่าวสาร
+                </button>
+            </div>
+            <div class="row g-4" id="news-container">
+                <!-- News items will be loaded here from Firebase -->
+                <div class="col-12 text-center py-5 loading-news">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted">กำลังโหลดข้อมูลข่าวสาร...</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 4: Experiences & Activities -->
+    <section id="experience" class="section-padding">
+        <div class="section-glow glow-top-right"></div>
+        <div class="container">
+            <div class="text-center mb-5" data-aos="fade-up">
+                <h2 class="section-title">🏆 ผลงานและกิจกรรม</h2>
+                <div class="title-line"></div>
+            </div>
+
+            <!-- Project Filters -->
+            <div class="row mb-5" data-aos="fade-up">
+                <div class="col-12 text-center">
+                    <div class="filter-btns d-inline-block">
+                        <button class="btn btn-outline-primary active mx-1 my-1" data-filter="all"
+                            onclick="filterByCategory('all')">ทั้งหมด</button>
+                        <button class="btn btn-outline-primary mx-1 my-1" data-filter="academic"
+                            onclick="filterByCategory('academic')">วิชาการ</button>
+                        <button class="btn btn-outline-primary mx-1 my-1" data-filter="innovation"
+                            onclick="filterByCategory('innovation')">ทักษะ & นวัตกรรม</button>
+                        <button class="btn btn-outline-primary mx-1 my-1" data-filter="volunteer"
+                            onclick="filterByCategory('volunteer')">จิตอาสา</button>
+                        <button class="btn btn-outline-primary mx-1 my-1" data-filter="leadership"
+                            onclick="filterByCategory('leadership')">ความเป็นผู้นำ</button>
+                        <button class="btn btn-outline-primary mx-1 my-1" data-filter="others"
+                            onclick="filterByCategory('others')">อื่น ๆ</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="admin-only d-none text-center mb-4">
+                <button class="btn btn-success rounded-pill px-4" data-bs-toggle="modal"
+                    data-bs-target="#addProjectModal">
+                    <i class="fas fa-plus me-2"></i>เพิ่มผลงานใหม่
+                </button>
+            </div>
+
+            <div class="row g-4 mb-5">
+                <div class="col-12" data-aos="fade-up">
+                    <h4 class="fw-bold mb-4 d-flex align-items-center"><i class="fas fa-rocket text-primary me-2"></i> ✨
+                        ผลงาน (Projects)</h4>
+                    <div class="row g-4" id="projects-container">
+                        <!-- Projects from Firebase -->
+                    </div>
+                </div>
+
+                <div class="col-12 mt-5" data-aos="fade-up">
+                    <h4 class="fw-bold mb-4 d-flex align-items-center"><i class="fas fa-skating text-primary me-2"></i>
+                        📢 กิจกรรม (Activities)</h4>
+                    <div class="row g-4" id="activities-container">
+                        <!-- Activities from Firebase -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Certificates -->
+    <section id="certificates" class="section-padding bg-light">
+        <div class="section-glow glow-bottom-left"></div>
+        <div class="container">
+            <div class="d-flex justify-content-between align-items-center mb-5" data-aos="fade-up">
+                <div>
+                    <h2 class="section-title text-start mb-0">📜 เกียรติบัตร</h2>
+                    <div class="title-line ms-0 mt-2"></div>
+                </div>
+                <button class="btn btn-outline-primary rounded-pill px-4 admin-only d-none" data-bs-toggle="modal"
+                    data-bs-target="#addCertModal">
+                    <i class="fas fa-plus me-2"></i>เพิ่มเกียรติบัตร
+                </button>
+            </div>
+            <div class="row g-3" id="cert-container">
+                <!-- Data from Firebase -->
+                <div class="col-12 text-center py-4">
+                    <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal: Add News -->
+    <div class="modal fade" id="addNewsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="newsModalTitle">เพิ่ม/แก้ไขข่าวสาร</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="newsForm">
+                        <input type="hidden" id="newsId">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">หัวข้อข่าว</label>
+                            <input type="text" class="form-control rounded-3" id="newsTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">หมวดหมู่</label>
+                            <select class="form-select rounded-3" id="newsCategory" required>
+                                <option value="ทั่วไป">ทั่วไป</option>
+                                <option value="กิจกรรม">กิจกรรม</option>
+                                <option value="วิชาการ">วิชาการ</option>
+                                <option value="รางวัล">รางวัล</option>
+                                <option value="อื่น ๆ">อื่น ๆ</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">เนื้อหา</label>
+                            <textarea class="form-control rounded-3" id="newsContent" rows="4" required></textarea>
+                        </div>
+                        <div class="text-end">
+                            <button type="submit"
+                                class="btn btn-primary-gradient rounded-pill px-4 w-100">บันทึกข้อมูล</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Project Details -->
+    <div class="modal fade" id="projectDetailModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 pt-0">
+                    <div id="project-detail-content">
+                        <!-- Content will be injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Project -->
+    <div class="modal fade" id="addProjectModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="projModalTitle">เพิ่ม/แก้ไขผลงาน</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="projectForm">
+                        <input type="hidden" id="projId">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">ประเภทข้อมูล</label>
+                            <select class="form-select rounded-3" id="projType" required>
+                                <option value="project">ผลงาน (Project)</option>
+                                <option value="activity">กิจกรรม (Activity)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">ชื่อโครงการ/กิจกรรม</label>
+                            <input type="text" class="form-control rounded-3" id="projTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">หมวดหมู่</label>
+                            <select class="form-select rounded-3" id="projCategory" required>
+                                <option value="academic">ด้านวิชาการ (Academic)</option>
+                                <option value="innovation">ด้านทักษะและนวัตกรรม (Special Skills/Innovation)</option>
+                                <option value="volunteer">ด้านจิตอาสา (Volunteer)</option>
+                                <option value="leadership">ด้านความเป็นผู้นำ (Leadership)</option>
+                                <option value="others">ด้านอื่น ๆ (Others)</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">บทบาทของคุณ</label>
+                            <input type="text" class="form-control rounded-3" id="projRole"
+                                placeholder="เช่น หัวหน้าโครงการ" required>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold">วันที่ดำเนินกิจกรรม</label>
+                                <input type="text" class="form-control rounded-3" id="projDate"
+                                    placeholder="เช่น มกราคม 2567" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label small fw-bold">สถานที่/หน่วยงาน</label>
+                                <input type="text" class="form-control rounded-3" id="projLocation"
+                                    placeholder="เช่น รร.สุรวิทยาคาร" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">URL รูปภาพหน้าปก</label>
+                            <input type="url" class="form-control rounded-3" id="projImg" placeholder="https://..."
+                                required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">ลิงก์เพิ่มเติม (ถ้ามี เช่น เว็บไซต์)</label>
+                            <input type="url" class="form-control rounded-3" id="projLink"
+                                placeholder="https://example.com">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">คำอธิบายสั้นๆ</label>
+                            <textarea class="form-control rounded-3" id="projDesc" rows="3" required></textarea>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary-gradient rounded-pill px-4 w-100">บันทึกโครงการ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Add Certificate -->
+    <div class="modal fade" id="addCertModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="certModalTitle">เพิ่ม/แก้ไขเกียรติบัตร</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="certForm">
+                        <input type="hidden" id="certId">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">ชื่อรางวัล / วุฒิบัตร</label>
+                            <input type="text" class="form-control rounded-3" id="certName" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">หน่วยงาน / โรงเรียน</label>
+                            <input type="text" class="form-control rounded-3" id="certOrg" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">วันที่ได้รับ (เช่น มกราคม 2567)</label>
+                            <input type="text" class="form-control rounded-3" id="certDate" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">ลิงก์รูปภาพเกียรติบัตร (URL)</label>
+                            <input type="text" class="form-control rounded-3" id="certImg"
+                                placeholder="https://example.com/image.jpg">
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary-gradient rounded-pill px-4 w-100">บันทึกเกียรติบัตร</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Admin Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-body p-4 text-center">
+                    <i class="fas fa-user-shield text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold mb-3">Admin Login</h5>
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <input type="password" class="form-control rounded-pill text-center" id="adminPassword"
+                                placeholder="รหัสผ่าน" required>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary-gradient rounded-pill px-4 w-100">เข้าสู่ระบบ</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Edit GPAX -->
+    <div class="modal fade" id="editGpaxModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold">แก้ไขผลการเรียน (5 เทอมแรก)</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="gpaxForm">
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">ม.4 เทอม 1</label>
+                                <input type="number" step="0.01" min="0" max="4"
+                                    class="form-control text-center sem-input" id="sem1" placeholder="0.00" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">ม.4 เทอม 2</label>
+                                <input type="number" step="0.01" min="0" max="4"
+                                    class="form-control text-center sem-input" id="sem2" placeholder="0.00" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">ม.5 เทอม 1</label>
+                                <input type="number" step="0.01" min="0" max="4"
+                                    class="form-control text-center sem-input" id="sem3" placeholder="0.00" required>
+                            </div>
+                            <div class="col-6">
+                                <label class="form-label small fw-bold">ม.5 เทอม 2</label>
+                                <input type="number" step="0.01" min="0" max="4"
+                                    class="form-control text-center sem-input" id="sem4" placeholder="0.00" required>
+                            </div>
+                            <div class="col-12 text-center">
+                                <label class="form-label small fw-bold">ม.6 เทอม 1</label>
+                                <input type="number" step="0.01" min="0" max="4"
+                                    class="form-control text-center sem-input mx-auto" style="max-width: 200px;"
+                                    id="sem5" placeholder="0.00" required>
+                            </div>
+                        </div>
+                        <div class="mt-4 p-3 bg-light rounded-3 text-center">
+                            <small class="text-muted d-block mb-1">GPAX สะสมที่คำนวณได้</small>
+                            <h3 class="fw-bold text-primary mb-0" id="calculatedGpax">0.00</h3>
+                        </div>
+                        <button type="submit"
+                            class="btn btn-primary-gradient rounded-pill px-4 w-100 mt-4">บันทึกข้อมูลทั้งหมด</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Edit Skills -->
+    <div class="modal fade" id="editSkillsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold">จัดการทักษะและความสามารถ</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <ul class="nav nav-pills mb-4 justify-content-center" role="tablist">
+                        <li class="nav-item">
+                            <button class="nav-link active rounded-pill px-4 me-2" data-bs-toggle="pill"
+                                data-bs-target="#edit-hard-skills">Hard Skills</button>
+                        </li>
+                        <li class="nav-item">
+                            <button class="nav-link rounded-pill px-4" data-bs-toggle="pill"
+                                data-bs-target="#edit-soft-skills">Soft Skills</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Edit Hard Skills -->
+                        <div class="tab-pane fade show active" id="edit-hard-skills">
+                            <form id="hardSkillForm" class="mb-4">
+                                <div class="bg-light p-4 rounded-4 shadow-sm border">
+                                    <h6 class="fw-bold mb-3 d-flex align-items-center">
+                                        <i class="fas fa-tools text-primary me-2"></i> เพิ่มทักษะใหม่ (Hard Skill)
+                                    </h6>
+                                    <div class="row g-3 align-items-end">
+                                        <div class="col-md-5">
+                                            <label class="form-label small fw-bold">ชื่อทักษะ / ภาษา</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-end-0"><i
+                                                        class="fas fa-code text-muted"></i></span>
+                                                <input type="text" class="form-control border-start-0 ps-0"
+                                                    id="hSkillName" placeholder="เช่น HTML, Photoshop" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">ระดับความชำนาญ (%)</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-end-0"><i
+                                                        class="fas fa-percentage text-muted"></i></span>
+                                                <input type="number" class="form-control border-start-0 ps-0"
+                                                    id="hSkillLevel" min="0" max="100" placeholder="0-100" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit"
+                                                class="btn btn-primary w-100 rounded-pill py-2 shadow-sm">
+                                                <i class="fas fa-plus me-1"></i> เพิ่มทักษะ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="admin-skills-container">
+                                <h6 class="fw-bold mb-3 small text-muted text-uppercase letter-spacing-1">
+                                    รายการทักษะปัจจุบัน</h6>
+                                <div id="admin-hard-skills-list" class="row g-2">
+                                    <!-- List items injected by JS -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Edit Soft Skills -->
+                        <div class="tab-pane fade" id="edit-soft-skills">
+                            <form id="softSkillForm" class="mb-4">
+                                <div class="bg-light p-4 rounded-4 shadow-sm border border-info-subtle">
+                                    <h6 class="fw-bold mb-3 d-flex align-items-center">
+                                        <i class="fas fa-heart text-info me-2"></i> เพิ่มทักษะใหม่ (Soft Skill)
+                                    </h6>
+                                    <div class="row g-3 align-items-end">
+                                        <div class="col-md-5">
+                                            <label class="form-label small fw-bold">ชื่อทักษะ / ความสามารถ</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-end-0"><i
+                                                        class="fas fa-users text-muted"></i></span>
+                                                <input type="text" class="form-control border-start-0 ps-0"
+                                                    id="sSkillName" placeholder="เช่น การทำงานเป็นทีม" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <label class="form-label small fw-bold">ระดับ</label>
+                                            <div class="input-group">
+                                                <span class="input-group-text bg-white border-end-0"><i
+                                                        class="fas fa-star text-muted"></i></span>
+                                                <select class="form-select border-start-0 ps-0" id="sSkillLevel">
+                                                    <option value="เชี่ยวชาญ">เชี่ยวชาญ (Expert)</option>
+                                                    <option value="คล่องแคล่ว">คล่องแคล่ว (Fluent)</option>
+                                                    <option value="ระดับพื้นฐาน">ระดับพื้นฐาน (Basic)</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <button type="submit"
+                                                class="btn btn-info text-white w-100 rounded-pill py-2 shadow-sm">
+                                                <i class="fas fa-plus me-1"></i> เพิ่มทักษะ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            <div class="admin-skills-container">
+                                <h6 class="fw-bold mb-3 small text-muted text-uppercase letter-spacing-1">
+                                    รายการทักษะปัจจุบัน</h6>
+                                <div id="admin-soft-skills-list" class="row g-2">
+                                    <!-- List items injected by JS -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: View Messages -->
+    <div class="modal fade" id="viewMessagesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold"><i
+                            class="fas fa-envelope-open-text text-primary me-2"></i>ข้อความติดต่อเข้า</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 pt-0">
+                    <div id="admin-messages-list" class="row g-3" style="max-height: 500px; overflow-y: auto;">
+                        <!-- Messages injected by JS -->
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-spinner fa-spin text-primary display-4 mb-3"></i>
+                            <p class="text-muted">กำลังโหลดข้อความ...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 6: Contact & Footer -->
+    <footer id="contact" class="footer-section section-padding text-white">
+        <!-- Decorative Glows -->
+        <div class="vibrant-glow bg-primary opacity-10"
+            style="top: 10%; right: 5%; width: 300px; height: 300px; filter: blur(100px); position: absolute; border-radius: 50%;">
+        </div>
+        <div class="vibrant-glow bg-purple opacity-10"
+            style="bottom: 10%; left: 5%; width: 250px; height: 250px; filter: blur(80px); position: absolute; border-radius: 50%;">
+        </div>
+
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="mb-5">
+                        <span class="text-primary fw-bold text-uppercase letter-spacing-2 mb-2 d-block">Get In
+                            Touch</span>
+                        <h2 class="fw-bold mb-4">ช่องทางการติดต่อ</h2>
+                        <p class="opacity-75 fs-5">สนใจร่วมงานหรือต้องการสอบถามข้อมูลเพิ่มเติม
+                            สามารถติดต่อได้ผ่านช่องทางด้านล่างนี้ครับ</p>
+                    </div>
+
+                    <div class="contact-links">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-item-text">
+                                <small>เบอร์โทรศัพท์</small>
+                                <span class="fw-bold">080-735-5174</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-item-text">
+                                <small>อีเมล</small>
+                                <span class="fw-bold">aewhadfg@gmail.com</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon me-3">
+                                <i class="fab fa-line"></i>
+                            </div>
+                            <div class="contact-item-text">
+                                <small>Line ID</small>
+                                <span class="fw-bold">0807355174</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="contact-form-box p-5 rounded-4 shadow-lg">
+                        <h4 class="fw-bold mb-4">ส่งข้อความหาฉัน</h4>
+                        <form id="contactForm">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label for="contactName" class="form-label">ชื่อของคุณ <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="contactName" placeholder="ชื่อ-นามสกุล"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contactEmail" class="form-label">อีเมล <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="contactEmail"
+                                        placeholder="พิมพ์อีเมลของคุณ" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="contactSubject" class="form-label">เรื่องที่ติดต่อ</label>
+                                    <input type="text" class="form-control" id="contactSubject"
+                                        placeholder="พิมพ์เรื่องที่ติดต่อ">
+                                </div>
+                                <div class="col-12">
+                                    <label for="contactMessage" class="form-label">ข้อความ <span
+                                            class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="contactMessage" rows="4"
+                                        placeholder="พิมพ์ข้อความของคุณที่นี่..." required></textarea>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-primary btn-send text-white w-100 py-3 mt-2">
+                                        ส่งข้อมูลการติดต่อ <i class="fas fa-paper-plane ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom text-center">
+                <p class="mb-2 opacity-50 small">&copy; 2024 - <span id="year"></span> Thanakorn Saejong Portfolio. All
+                    Rights Reserved.</p>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <a href="https://www.facebook.com/thanakorn.sae.jong.2024" class="text-white opacity-50"><i
+                            class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/thanakornsaejong6/" class="text-white opacity-50"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/Pooh191" class="text-white opacity-50"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="btn btn-primary rounded-circle shadow">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap & JS Libraries -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/main.js"></script>
+</body>
+
+</html>
