@@ -231,11 +231,9 @@ document.addEventListener('DOMContentLoaded', function () {
                                 data.category === 'leadership' ? 'ด้านความเป็นผู้นำ' :
                                     data.category === 'others' ? 'ด้านอื่น ๆ' : data.category}
                             </span>
-                            <div class="mb-3">
-                                <p class="text-muted small mb-1"><i class="far fa-calendar-alt me-2 text-primary"></i>${data.date || 'ไม่ระบุวันที่'}</p>
-                                <p class="text-muted small mb-0"><i class="fas fa-map-marker-alt me-2 text-primary"></i>${data.location || 'ไม่ระบุสถานที่'}</p>
+                            <div class="mb-2">
+                                <p class="text-muted small mb-0"><i class="far fa-calendar-alt me-2 text-primary"></i>${data.date || 'ไม่ระบุวันที่'}</p>
                             </div>
-                            <p class="text-dark fw-bold small mb-0"><i class="fas fa-user-tag me-2 text-primary"></i>บทบาท: ${data.role}</p>
                         </div>
                     </div>
                 `;
@@ -853,6 +851,15 @@ document.addEventListener('DOMContentLoaded', function () {
             if (doc.exists) {
                 const data = doc.data();
                 const content = document.getElementById('project-detail-content');
+                const categoryNames = {
+                    'academic': 'ด้านวิชาการ',
+                    'innovation': 'ทักษะ & นวัตกรรม',
+                    'volunteer': 'ด้านจิตอาสา',
+                    'leadership': 'ด้านความเป็นผู้นำ',
+                    'others': 'ด้านอื่น ๆ'
+                };
+                const displayCategory = categoryNames[data.category] || data.category;
+
                 if (content) {
                     content.innerHTML = `
                         <div class="row">
@@ -860,21 +867,23 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <img src="${data.image}" class="img-fluid rounded-4 shadow-sm" alt="${data.title}">
                             </div>
                             <div class="col-md-6">
-                                <span class="badge bg-soft-primary text-primary mb-3 px-3 py-2 rounded-pill">${data.category}</span>
+                                <span class="badge bg-soft-primary text-primary mb-3 px-3 py-2 rounded-pill">${displayCategory}</span>
                                 <h3 class="fw-bold mb-3">${data.title}</h3>
+                                ${data.role ? `
                                 <div class="mb-3">
                                     <h6 class="fw-bold text-primary mb-1"><i class="fas fa-user-tag me-2"></i>บทบาท</h6>
                                     <p class="text-muted small">${data.role}</p>
-                                </div>
+                                </div>` : ''}
                                 <div class="row mb-3">
                                     <div class="col-6">
                                         <h6 class="fw-bold text-primary mb-1"><i class="far fa-calendar-alt me-2"></i>วันที่</h6>
                                         <p class="text-muted small">${data.date || '-'}</p>
                                     </div>
+                                    ${data.location ? `
                                     <div class="col-6">
                                         <h6 class="fw-bold text-primary mb-1"><i class="fas fa-map-marker-alt me-2"></i>สถานที่</h6>
-                                        <p class="text-muted small">${data.location || '-'}</p>
-                                    </div>
+                                        <p class="text-muted small">${data.location}</p>
+                                    </div>` : ''}
                                 </div>
                                 <div>
                                     <h6 class="fw-bold text-primary mb-1"><i class="fas fa-info-circle me-2"></i>รายละเอียดเพิ่มเติม</h6>
