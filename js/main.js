@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     const ADMIN_CODE = "admin123"; //รหัสผ่านแอดมิน (Password)
+    window.currentProjectFilter = 'all';
 
 
 
@@ -239,16 +240,20 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
 
                 if (data.type === 'activity') {
-                    aContainer.appendChild(col);
                     aCount++;
+                    col.classList.add('is-activity');
+                    aContainer.appendChild(col);
                 } else {
-                    pContainer.appendChild(col);
                     pCount++;
+                    col.classList.add('is-project');
+                    pContainer.appendChild(col);
                 }
             });
 
             if (pCount === 0) pContainer.innerHTML = '<div class="col-12 text-center text-muted py-4">ยังไม่มีข้อมูลผลงาน</div>';
             if (aCount === 0) aContainer.innerHTML = '<div class="col-12 text-center text-muted py-4">ยังไม่มีข้อมูลกิจกรรม</div>';
+
+            refreshProjectVisibility();
 
             // Init Drag & Drop for both
             if (isAdmin && typeof Sortable !== 'undefined') {
@@ -287,18 +292,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (isAdmin) container.classList.add('admin-mode'); else container.classList.remove('admin-mode');
 
             // Get certificates and sort by 'order'
-            const certs = [];
-            snapshot.forEach(doc => certs.push({ id: doc.id, ...doc.data() }));
-
-            // Sort: Order (ASC), then createdAt (DESC) fallback
-            certs.sort((a, b) => {
-                const orderA = a.order !== undefined ? a.order : 999;
-                const orderB = b.order !== undefined ? b.order : 999;
-                if (orderA !== orderB) return orderA - orderB;
-                return (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0);
-            });
-
-            certs.forEach((data, index) => {
+            items.forEach((data, index) => {
                 const col = document.createElement('div');
                 col.className = 'col-lg-4 col-md-6 cert-item';
                 col.setAttribute('data-aos', 'fade-up');
@@ -331,6 +325,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
                 container.appendChild(col);
             });
+
+            window.refreshCertsVisibility();
 
             // Init Drag & Drop for Certificates
             if (isAdmin && typeof Sortable !== 'undefined' && certs.length > 0) {
@@ -494,7 +490,7 @@ document.addEventListener('DOMContentLoaded', function () {
             container.innerHTML = '';
             const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
 
-            items.forEach(data => {
+            items.forEach((data, index) => {
                 const col = document.createElement('div');
                 col.className = 'col-lg-4 col-md-6 news-item-card';
                 col.dataset.id = data.id;
@@ -519,6 +515,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 `;
                 container.appendChild(col);
             });
+
+            window.refreshNewsVisibility();
 
             // Init Sortable for News
             if (isAdmin && typeof Sortable !== 'undefined') {
@@ -1240,30 +1238,141 @@ document.addEventListener('DOMContentLoaded', function () {
     // AOS
     if (typeof AOS !== 'undefined') AOS.init({ duration: 1000, once: true });
 
-    // Back to Top
-    const backToTop = document.getElementById('back-to-top');
-    window.addEventListener('scroll', () => {
-        backToTop.style.display = window.scrollY > 600 ? 'flex' : 'none';
-    });
-    backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    window.refreshProjectVisibility = function () {
+        ['project', 'activity'].forEach(type => {
+            const containerId = type === 'project' ? 'projects-container' : 'activities-container';
+            const btnId = `show-more-${type}s`;
+            const btn = document.getElementById(btnId);
+            const isExpanded = btn?.dataset.expanded === "true";
+            const items = document.querySelectorAll(`#${containerId} .project-item`);
+
+            let matchedCount = 0;
+            items.forEach(item => {
+                const matchesFilter = window.currentProjectFilter === 'all' || item.classList.contains(window.currentProjectFilter);
+                if (matchesFilter) {
+                    matchedCount++;
+                    item.style.display = 'block'; // Ensure it's not hidden by previous filter style
+
+                    // Logic for pagination class 'more-X' and 'd-none'
+                    item.classList.remove(`more-${type}`);
+                    if (matchedCount > 6) {
+                        item.classList.add(`more-${type}`);
+                        item.classList.toggle('d-none', !isExpanded);
+                    } else {
+                        item.classList.remove('d-none');
+                    }
+                } else {
+                    item.style.display = 'none';
+                    item.classList.remove('d-none'); // d-none is for pagination, display is for filter
+                }
+            });
+
+            if (btn) {
+                btn.parentElement.classList.toggle('d-none', matchedCount <= 6);
+                if (matchedCount <= 6) {
+                    btn.dataset.expanded = "false";
+                    btn.innerHTML = 'ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>';
+                }
+            }
+        });
+        if (typeof AOS !== 'undefined') setTimeout(() => AOS.refresh(), 100);
+    };
+
+    window.toggleShowMoreBtn = function (type, show) {
+        const btn = document.getElementById(`show-more-${type}`);
+        if (btn) {
+            btn.parentElement.classList.toggle('d-none', !show);
+            if (!show) {
+                btn.innerHTML = 'ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>';
+                btn.dataset.expanded = "false";
+            }
+        }
+    };
+
+    window.refreshCertsVisibility = function () {
+        const btn = document.getElementById('show-more-certs');
+        const isExpanded = btn?.dataset.expanded === "true";
+        const items = document.querySelectorAll('#cert-container .cert-item');
+
+        items.forEach((item, index) => {
+            if (index >= 6) {
+                item.classList.add('more-cert');
+                item.classList.toggle('d-none', !isExpanded);
+            } else {
+                item.classList.remove('more-cert', 'd-none');
+            }
+        });
+
+        if (btn) {
+            btn.parentElement.classList.toggle('d-none', items.length <= 6);
+            if (items.length <= 6) {
+                btn.dataset.expanded = "false";
+                btn.innerHTML = 'ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>';
+            }
+        }
+        if (typeof AOS !== 'undefined') setTimeout(() => AOS.refresh(), 100);
+    };
+
+    window.refreshNewsVisibility = function () {
+        const btn = document.getElementById('show-more-news');
+        const isExpanded = btn?.dataset.expanded === "true";
+        const items = document.querySelectorAll('#news-container .news-item-card');
+
+        items.forEach((item, index) => {
+            if (index >= 6) {
+                item.classList.add('more-news');
+                item.classList.toggle('d-none', !isExpanded);
+            } else {
+                item.classList.remove('more-news', 'd-none');
+            }
+        });
+
+        if (btn) {
+            btn.parentElement.classList.toggle('d-none', items.length <= 6);
+            if (items.length <= 6) {
+                btn.dataset.expanded = "false";
+                btn.innerHTML = 'ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>';
+            }
+        }
+        if (typeof AOS !== 'undefined') setTimeout(() => AOS.refresh(), 100);
+    };
+
+    window.toggleItems = function (type) {
+        const btn = document.getElementById(`show-more-${type}`);
+        if (!btn) return;
+
+        const isExpanded = btn.dataset.expanded === "true";
+        const newExpanded = !isExpanded;
+
+        btn.dataset.expanded = newExpanded.toString();
+        btn.innerHTML = newExpanded ? 'แสดงน้อยลง <i class="fas fa-chevron-up ms-2"></i>' : 'ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>';
+
+        if (type === 'projects' || type === 'activities') {
+            window.refreshProjectVisibility();
+        } else if (type === 'certs') {
+            window.refreshCertsVisibility();
+        } else if (type === 'news') {
+            window.refreshNewsVisibility();
+        }
+
+        if (!newExpanded) {
+            const section = btn.closest('section');
+            if (section) window.scrollTo({ top: section.offsetTop - 80, behavior: 'smooth' });
+        }
+
+        if (typeof AOS !== 'undefined') AOS.refresh();
+    };
 });
 
 window.applyProjectFilter = function (filter) {
+    window.currentProjectFilter = filter;
     const btns = document.querySelectorAll('.filter-btns .btn');
-
     btns.forEach(b => {
         if (b.getAttribute('data-filter') === filter) b.classList.add('active');
         else b.classList.remove('active');
     });
 
-    // We don't need to add filter-active class to a specific container anymore
-    // as we just hide/show items globally
-
-    document.querySelectorAll('.project-item').forEach(item => {
-        item.style.display = (filter === 'all' || item.classList.contains(filter)) ? 'block' : 'none';
-    });
-
-    if (typeof AOS !== 'undefined') AOS.refresh();
+    window.refreshProjectVisibility();
 };
 
 window.filterByCategory = function (category) {
