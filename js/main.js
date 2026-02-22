@@ -287,12 +287,28 @@ document.addEventListener('DOMContentLoaded', function () {
 
         db.collection('certificates').onSnapshot(snapshot => {
             container.innerHTML = '';
-
             const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="col-12 text-center text-muted py-4">ยังไม่มีข้อมูลเกียรติบัตร</div>';
+                toggleShowMoreBtn('certs', false);
+                return;
+            }
             if (isAdmin) container.classList.add('admin-mode'); else container.classList.remove('admin-mode');
 
             // Get certificates and sort by 'order'
-            items.forEach((data, index) => {
+            const certs = [];
+            snapshot.forEach(doc => certs.push({ id: doc.id, ...doc.data() }));
+
+            // Sort: Order (ASC), then createdAt (DESC) fallback
+            certs.sort((a, b) => {
+                const orderA = a.order !== undefined ? a.order : 999;
+                const orderB = b.order !== undefined ? b.order : 999;
+                if (orderA !== orderB) return orderA - orderB;
+                return (b.createdAt?.toMillis?.() || 0) - (a.createdAt?.toMillis?.() || 0);
+            });
+
+            certs.forEach((data, index) => {
                 const col = document.createElement('div');
                 col.className = 'col-lg-4 col-md-6 cert-item';
                 col.setAttribute('data-aos', 'fade-up');
@@ -1241,7 +1257,7 @@ document.addEventListener('DOMContentLoaded', function () {
     window.refreshProjectVisibility = function () {
         ['project', 'activity'].forEach(type => {
             const containerId = type === 'project' ? 'projects-container' : 'activities-container';
-            const btnId = `show-more-${type}s`;
+            const btnId = type === 'project' ? 'show-more-projects' : 'show-more-activities';
             const btn = document.getElementById(btnId);
             const isExpanded = btn?.dataset.expanded === "true";
             const items = document.querySelectorAll(`#${containerId} .project-item`);
@@ -1359,9 +1375,65 @@ document.addEventListener('DOMContentLoaded', function () {
             const section = btn.closest('section');
             if (section) window.scrollTo({ top: section.offsetTop - 80, behavior: 'smooth' });
         }
-
         if (typeof AOS !== 'undefined') AOS.refresh();
     };
+
+    // Dynamic Age Calculation
+    function updateDynamicAge() {
+        const ageElements = document.querySelectorAll('.dynamic-age');
+        if (ageElements.length === 0) return;
+
+        // Birthday: March 20, 2011 (based on previous user edit)
+        const birthDate = new Date(2011, 2, 20, 0, 0, 0);
+
+        setInterval(() => {
+            const now = new Date();
+
+            let years = now.getFullYear() - birthDate.getFullYear();
+            let months = now.getMonth() - birthDate.getMonth();
+            let days = now.getDate() - birthDate.getDate();
+            let hours = now.getHours() - birthDate.getHours();
+            let minutes = now.getMinutes() - birthDate.getMinutes();
+            let seconds = now.getSeconds() - birthDate.getSeconds();
+
+            if (seconds < 0) { seconds += 60; minutes--; }
+            if (minutes < 0) { minutes += 60; hours--; }
+            if (hours < 0) { hours += 24; days--; }
+
+            if (days < 0) {
+                const lastMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+                days += lastMonth.getDate();
+                months--;
+            }
+            if (months < 0) {
+                months += 12;
+                years--;
+            }
+
+            const ageFull = `
+                <div class="d-flex flex-wrap gap-1" style="font-size: 0.8rem; line-height: 1.2;">
+                    <span>${years}ปี</span>
+                    <span>${months}ด.</span>
+                    <span>${days}ว.</span>
+                    <span>${hours}ชม.</span>
+                    <span>${minutes}น.</span>
+                    <span>${seconds}ว.</span>
+                </div>
+            `;
+
+            const ageSimple = `${years} ปี ${months} เดือน ${days} วัน ${hours} ชม. ${minutes} น. ${seconds} ว.`;
+
+            ageElements.forEach(el => {
+                if (el.classList.contains('age-simple')) {
+                    if (el.innerHTML !== ageSimple) el.innerHTML = ageSimple;
+                } else {
+                    if (el.innerHTML !== ageFull) el.innerHTML = ageFull;
+                }
+            });
+        }, 1000);
+    }
+
+    updateDynamicAge();
 });
 
 window.applyProjectFilter = function (filter) {
