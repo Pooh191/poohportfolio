@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Me | ธีรภัทร์ ทองดำ</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- AOS Animation -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/style.css">
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+
+<body class="loading">
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress-container">
+        <div class="scroll-progress-bar" id="scrollBar"></div>
+    </div>
+
+    <!-- Loader -->
+    <div id="loader" class="loader-wrapper">
+        <div class="loader-content">
+            <div class="loader-circle"></div>
+            <div class="loader-text text-gradient fw-bold mt-3">THANAKORN</div>
+        </div>
+    </div>
+
+    <!-- Floating Socials -->
+    <div class="floating-socials d-none d-lg-flex">
+        <a href="https://www.facebook.com/thanakorn.sae.jong.2024" class="social-link"><i
+                class="fab fa-facebook-f"></i></a>
+        <a href="https://github.com/Pooh191" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="https://www.instagram.com/thanakornsaejong6/" class="social-link"><i class="fab fa-instagram"></i></a>
+        <div class="social-line"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg fixed-top bg-white shadow-sm">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="index.html">PORTFOLIO</a>
+
+            <div class="d-flex align-items-center order-lg-last ms-2">
+                <button id="dark-mode-toggle" class="btn btn-link text-dark p-0 me-3" title="Toggle Dark Mode">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+            </div>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html#home"><i
+                                class="fas fa-home me-2"></i>หน้าแรก</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link active" href="aboutme.html"><i
+                                class="fas fa-user me-2"></i>ข้อมูลส่วนตัว</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#education"><i
+                                class="fas fa-graduation-cap me-2"></i>การศึกษา</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#skills"><i
+                                class="fas fa-tools me-2"></i>ทักษะ</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#news"><i
+                                class="fas fa-newspaper me-2"></i>ข่าวสาร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#experience"><i
+                                class="fas fa-briefcase me-2"></i>ผลงาน</a></li>
+                    <li class="nav-item"><a class="nav-link" href="index.html#certificates"><i
+                                class="fas fa-award me-2"></i>เกียรติบัตร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact"><i
+                                class="fas fa-paper-plane me-2"></i>ติดต่อ</a></li>
+                    <li class="nav-item admin-only d-none"><a class="nav-link text-primary fw-bold" href="#"
+                            data-bs-toggle="modal" data-bs-target="#viewMessagesModal"><i
+                                class="fas fa-envelope me-1"></i>ข้อความ</a></li>
+                    <li class="nav-item admin-only d-none"><a class="nav-link text-danger fw-bold" href="#"
+                            id="logoutBtn">ออกจากระบบ</a></li>
+                    <li class="nav-item guest-only"><a class="nav-link text-primary fw-bold" href="#"
+                            data-bs-toggle="modal" data-bs-target="#loginModal"><i
+                                class="fas fa-lock me-1"></i>Admin</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="about-hero">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5 text-center" data-aos="zoom-in">
+                    <div class="about-hero-img-wrapper">
+                        <div class="about-hero-glow"></div>
+                        <img src="img/Profile.png" alt="Profile" class="about-hero-img">
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left" data-aos-delay="200">
+                    <div class="about-hero-quotes mt-4 mt-lg-0">
+                        <div class="about-hero-quote">“การศึกษาคือรากฐานของการพัฒนา”</div>
+                        <div class="about-hero-quote">“ครูคือผู้จุดประกายความฝัน”</div>
+                        <div class="about-hero-quote highlight">“การเมืองคือเครื่องมือเปลี่ยนแปลงการศึกษา”</div>
+                        <div class="about-hero-signature">— ธนากร แซ่จอง (ภู)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Content -->
+    <section class="section-padding">
+        <div class="container pt-4">
+            <!-- Info Cards Grid -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-blue">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>ชื่อ</label>
+                            <span>ธนากร แซ่จอง</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-orange">
+                            <i class="far fa-smile"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>ชื่อเล่น</label>
+                            <span>ภู</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-purple">
+                            <i class="far fa-calendar-alt"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>วันเกิด</label>
+                            <span>20 มีนาคม 2554</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="400">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-green">
+                            <i class="far fa-clock"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>อายุ</label>
+                            <span class="dynamic-age" style="font-size: 0.85rem;">กำลังคำนวณ...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="500">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-blue"
+                            style="background: rgba(15, 23, 42, 0.08); color: #1e293b;">
+                            <i class="fas fa-book"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>การศึกษา</label>
+                            <span style="font-size: 0.95rem;">โรงเรียนสุรวิทยาคาร</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="600">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-red">
+                            <i class="fas fa-map-marker-alt"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>ที่อยู่</label>
+                            <span>อำเภอเมืองสุรินทร์, จังหวัดสุรินทร์</span>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="700">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-blue">
+                            <i class="far fa-heart"></i>
+                        </div>
+                        <div class="about-info-content">
+                            <label>สถานะ</label>
+                            <span>โสด</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-8" data-aos="fade-up" data-aos-delay="800">
+                    <div class="about-info-card">
+                        <div class="about-info-icon icon-pink">
+                            <i class="fas fa-sparkles"></i>
+                        </div>
+                        <div class="about-info-content w-100">
+                            <label>สิ่งที่ชอบ</label>
+                            <div class="hobby-tags">
+                                <span class="hobby-tag">เทคโนโลยี</span>
+                                <span class="hobby-tag">การศึกษา</span>
+                                <span class="hobby-tag">การเมือง</span>
+                                <span class="hobby-tag">พัฒนาสังคม</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Goal Banner -->
+            <div class="goal-banner" data-aos="zoom-in">
+                <div class="goal-banner-content">
+                    <p class="mb-2 fw-bold opacity-75">เป้าหมายในชีวิต</p>
+                    <h1 class="fw-bold mb-0 display-5">ครูคอมพิวเตอร์ สู่นักการเมืองเพื่อการศึกษา</h1>
+                    <p class="mt-3 opacity-75 fs-5">“พัฒนาการศึกษาด้วยเทคโนโลยี ขับเคลื่อนนโยบายเพื่ออนาคต”</p>
+                </div>
+                <div class="goal-icon-float d-none d-md-flex">
+                    <i class="fas fa-bullseye"></i>
+                </div>
+            </div>
+
+            <!-- Vision Cards -->
+            <div class="row g-4 my-5">
+                <div class="col-md-6" data-aos="fade-right">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-primary bg-opacity-10 p-3 me-3">
+                                <i class="fas fa-chalkboard-teacher text-primary fa-2x"></i>
+                            </div>
+                            <h3 class="fw-bold mb-0">เส้นทางครู</h3>
+                        </div>
+                        <p class="text-muted mb-0">เริ่มจากการเป็นครูคอมพิวเตอร์ ถ่ายทอดความรู้ด้านเทคโนโลยี
+                            สร้างแรงบันดาลใจให้เยาวชน และพัฒนาหลักสูตรที่ตอบโจทย์ยุคดิจิทัล</p>
+                    </div>
+                </div>
+                <div class="col-md-6" data-aos="fade-left">
+                    <div class="card h-100 border-0 shadow-sm p-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="rounded-circle bg-warning bg-opacity-10 p-3 me-3">
+                                <i class="fas fa-landmark text-warning fa-2x"></i>
+                            </div>
+                            <h3 class="fw-bold mb-0">เส้นทางนักการเมือง</h3>
+                        </div>
+                        <p class="text-muted mb-0">หลังเกษียณจากการเป็นครู จะนำประสบการณ์ทางการศึกษามาขับเคลื่อนนโยบาย
+                            เพื่อพัฒนาระบบการศึกษาไทยให้ก้าวไกลและเท่าเทียม</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Text Content -->
+            <div class="row justify-content-center">
+                <div class="col-lg-10 about-text-content">
+                    <h1 class="text-primary fw-bold mb-5" data-aos="fade-up">มาทำความรู้จักตัวผมกัน!</h1>
+
+                    <p data-aos="fade-up">
+                        สวัสดีครับผมชื่อนายธนากร แซ่จอง ชื่อเล่นภู อายุ <span
+                            class="dynamic-age age-simple text-primary fw-bold">กำลังคำนวณ...</span>
+                        โรงเรียนสุรวิทยาคาร ผมมีความใฝ่ฝันและเป้าหมายชีวิตที่ชัดเจน
+                        คือการก้าวสู่การเป็นข้าราชการครู และเมื่อเกษียณอายุราชการจะก้าวสู่วงการการเมือง
+                        เพื่อขับเคลื่อนนโยบายด้านการศึกษาโดยเฉพาะ
+                        ผมเชื่อมั่นว่าการมีประสบการณ์ในห้องเรียนจะทำให้เข้าใจปัญหาการศึกษาอย่างแท้จริง
+                        และสามารถผลักดันนโยบายที่ตอบโจทย์ทั้งครูและนักเรียนได้
+                    </p>
+
+                    <p data-aos="fade-up">
+                        สำหรับผมแล้ว แรงบันดาลใจคือกุญแจสำคัญสู่ความสำเร็จในชีวิต
+                        เพราะชีวิตที่ผ่านมาคือครูที่สอนบทเรียนอันมีค่าสำหรับผม
+                        และชีวิตที่เหลือคือโอกาสสำหรับการเปลี่ยนแปลง
+                        เพื่อก้าวเดินตามความฝันและเป้าหมายที่ผมได้ตั้งไว้ในด้านการศึกษาอย่างมั่นคง
+                    </p>
+
+                    <h2 class="mt-5" data-aos="fade-up">ทำไมต้องเป็นครู แล้วค่อยเป็นนักการเมือง?</h2>
+
+                    <div class="about-quote-box" data-aos="fade-left"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        “ผมเชื่อว่าการเป็นครูจะทำให้เข้าใจปัญหาการศึกษาอย่างลึกซึ้ง
+                        และเมื่อเข้าใจปัญหาอย่างแท้จริงแล้ว จึงจะสามารถแก้ไขได้อย่างถูกจุด
+                        การเป็นนักการเมืองจึงเป็นเครื่องมือในการขยายผลการแก้ปัญหาในระดับนโยบาย”
+                    </div>
+
+                    <h3 data-aos="fade-up">ความเชื่อมโยงระหว่างครูและนักการเมือง</h3>
+                    <p data-aos="fade-up">
+                        ผมมองว่าการเป็นครูและการเป็นนักการเมืองนั้นไม่แตกต่างกันเลย
+                        เพราะทั้งสองอาชีพคือ "ผู้ให้" เหมือนกัน ต่างกันแค่รูปแบบ
+                        ครูให้ความรู้และแนวคิดกับนักเรียนในห้องเรียน ในขณะที่นักการเมืองที่ดี
+                        ควรให้โอกาสและสร้างความเท่าเทียมให้กับประชาชนทุกคน
+                        การมีประสบการณ์เป็นครูมาก่อนจะทำให้เข้าใจปัญหาหน้าต่างๆ ของการศึกษา
+                        เช่น หลักสูตรที่ไม่ตอบโจทย์ ภาระงานของครูที่มากเกินไป
+                        หรือความเหลื่อมล้ำทางการศึกษา เมื่อเข้าใจปัญหาเหล่านี้อย่างถ่องแท้
+                        การออกนโยบายก็จะตรงจุดและแก้ไขปัญหาได้จริง
+                    </p>
+
+                    <h3 data-aos="fade-up">ประสบการณ์ที่จะนำมาสู่นโยบาย</h3>
+                    <p data-aos="fade-up">
+                        เมื่อได้เป็นครูคอมพิวเตอร์ ผมจะเก็บเกี่ยวประสบการณ์ทุกอย่าง
+                        ทั้งการจัดการชั้นเรียน การพัฒนาสื่อการสอน การเข้าใจปัญหาของนักเรียนแต่ละคน
+                        และการทำงานร่วมกับเพื่อนครูและผู้บริหาร
+                        ประสบการณ์เหล่านี้จะเป็นข้อมูลสำคัญในการผลักดันนโยบายด้านการศึกษาในอนาคต
+                        เช่น นโยบายการลดภาระงานธุรการของครู การส่งเสริมการใช้เทคโนโลยีในการเรียนการสอน
+                        หรือการพัฒนาระบบประเมินผลที่เหมาะสมกับผู้เรียนในศตวรรษที่ 21
+                    </p>
+
+                    <h3 data-aos="fade-up">วิสัยทัศน์ในการพัฒนาการศึกษาไทย</h3>
+                    <p data-aos="fade-up">
+                        ในฐานะที่ผมเติบโตมากับเทคโนโลยีและมีความสามารถด้านการเขียนโปรแกรม
+                        ผมมีวิสัยทัศน์ว่าการศึกษาไทยต้องปรับตัวให้ทันโลก โดยเฉพาะในด้าน
+                        <strong>Digital Transformation</strong> ในโรงเรียน
+                        ไม่ใช่แค่การนำแท็บเล็ตมาแจกนักเรียน แต่คือการเปลี่ยนวิธีการสอน
+                        การวัดผล และการบริหารจัดการทั้งหมดให้มีประสิทธิภาพด้วยเทคโนโลยี
+                        และที่สำคัญคือการพัฒนา <strong>Soft Skills</strong> ให้กับนักเรียน
+                        เพื่อให้พร้อมสำหรับโลกอนาคตที่เปลี่ยนแปลงอย่างรวดเร็ว
+                    </p>
+
+                    <h3 data-aos="fade-up">จากครูสู่นักการเมืองเพื่อการศึกษา</h3>
+                    <p data-aos="fade-up" class="mb-5">
+                        แผนในอนาคตของผมคือการเป็นครูคอมพิวเตอร์ที่มีคุณภาพ
+                        สร้างการเปลี่ยนแปลงในระดับชั้นเรียนและโรงเรียนให้เห็นเป็นรูปธรรม
+                        เมื่อสะสมประสบการณ์และความเชี่ยวชาญจนถึงวัยเกษียณ
+                        ผมจะนำองค์ความรู้นี้เข้าสู่การเมืองเพื่อขยายผลในระดับนโยบาย
+                        เพราะผมเชื่อว่าการเปลี่ยนแปลงที่ยั่งยืนต้องเกิดจากการขับเคลื่อนทั้งในระดับปฏิบัติการและระดับนโยบายไปพร้อมกัน
+                        ครูคือรากฐาน ส่วนนักการเมืองคือผู้สร้างระบบให้รากฐานแข็งแรง
+                        และนี่คือเส้นทางที่ผมเลือกเพื่อพัฒนาการศึกษาไทยอย่างแท้จริง
+                    </p>
+
+                    <!-- Timeline Section -->
+                    <h2 class="mt-5" data-aos="fade-up">เส้นทางสู่อนาคต</h2>
+                    <div class="timeline mt-4" data-aos="fade-up">
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-primary"></div>
+                            <div class="timeline-content">
+                                <h4>ปัจจุบัน - มัธยมศึกษา</h4>
+                                <p>ศึกษาเล่าเรียน พัฒนาทักษะด้านเทคโนโลยีและการเขียนโปรแกรม เก็บเกี่ยวประสบการณ์</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h4>ปัจจุบัน - มหาวิทยาลัยสุโขทัยธรรมาธิราช</h4>
+                                <p>กำลังศึกษาต่อคณะรัฐศาสตร์ สาขาการเมืองการปกครอง
+                                </p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-success"></div>
+                            <div class="timeline-content">
+                                <h4>อนาคตอันใกล้ - ศึกษาต่อ</h4>
+                                <p>ศึกษาต่อคณะครุศาสตร์/ศึกษาศาสตร์ สาขาคอมพิวเตอร์ศึกษา
+                                </p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-info"></div>
+                            <div class="timeline-content">
+                                <h4>วัยทำงาน - ครูคอมพิวเตอร์</h4>
+                                <p>ประกอบอาชีพครู สั่งสมประสบการณ์ พัฒนาการเรียนการสอน สร้างชื่อเสียง</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-marker bg-warning"></div>
+                            <div class="timeline-content">
+                                <h4>หลังเกษียณ - นักการเมือง</h4>
+                                <p>นำประสบการณ์ทางการศึกษามาขับเคลื่อนนโยบาย พัฒนาการศึกษาไทยอย่างยั่งยืน</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section: Contact & Footer -->
+    <footer id="contact" class="footer-section section-padding text-white">
+        <!-- Decorative Glows -->
+        <div class="vibrant-glow bg-primary opacity-10"
+            style="top: 10%; right: 5%; width: 300px; height: 300px; filter: blur(100px); position: absolute; border-radius: 50%;">
+        </div>
+        <div class="vibrant-glow bg-purple opacity-10"
+            style="bottom: 10%; left: 5%; width: 250px; height: 250px; filter: blur(80px); position: absolute; border-radius: 50%;">
+        </div>
+
+        <div class="container">
+            <div class="row g-5 align-items-center">
+                <div class="col-lg-5" data-aos="fade-right">
+                    <div class="mb-5">
+                        <span class="text-primary fw-bold text-uppercase letter-spacing-2 mb-2 d-block">Get In
+                            Touch</span>
+                        <h2 class="fw-bold mb-4">ช่องทางการติดต่อ</h2>
+                        <p class="opacity-75 fs-5">สนใจร่วมงานหรือต้องการสอบถามข้อมูลเพิ่มเติม
+                            สามารถติดต่อได้ผ่านช่องทางด้านล่างนี้ครับ</p>
+                    </div>
+
+                    <div class="contact-links">
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-phone"></i>
+                            </div>
+                            <div class="contact-item-text">
+                                <small>เบอร์โทรศัพท์</small>
+                                <span class="fw-bold">080-735-5174</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="contact-icon me-3">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div class="contact-item-text">
+                                <small>อีเมล</small>
+                                <span class="fw-bold">aewhadfg@gmail.com</span>
+                            </div>
+                        </div>
+                        <div class="d-flex align-items-center">
+                            <div class="contact-icon me-3">
+                                <i class="fab fa-line"></i>
+                            </div>
+                            <div class="contact-item-text">
+                                <small>Line ID</small>
+                                <span class="fw-bold">0807355174</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-7" data-aos="fade-left">
+                    <div class="contact-form-box p-5 rounded-4 shadow-lg">
+                        <h4 class="fw-bold mb-4">ส่งข้อความหาฉัน</h4>
+                        <form id="contactForm">
+                            <div class="row g-4">
+                                <div class="col-md-6">
+                                    <label for="contactName" class="form-label">ชื่อของคุณ <span
+                                            class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="contactName" placeholder="ชื่อ-นามสกุล"
+                                        required>
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="contactEmail" class="form-label">อีเมล <span
+                                            class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="contactEmail"
+                                        placeholder="พิมพ์อีเมลของคุณ" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="contactSubject" class="form-label">เรื่องที่ติดต่อ</label>
+                                    <input type="text" class="form-control" id="contactSubject"
+                                        placeholder="พิมพ์เรื่องที่ติดต่อ">
+                                </div>
+                                <div class="col-12">
+                                    <label for="contactMessage" class="form-label">ข้อความ <span
+                                            class="text-danger">*</span></label>
+                                    <textarea class="form-control" id="contactMessage" rows="4"
+                                        placeholder="พิมพ์ข้อความของคุณที่นี่..." required></textarea>
+                                </div>
+                                <div class="col-12 text-end">
+                                    <button type="submit" class="btn btn-primary btn-send text-white w-100 py-3 mt-2">
+                                        ส่งข้อมูลการติดต่อ <i class="fas fa-paper-plane ms-2"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-bottom text-center">
+                <p class="mb-2 opacity-50 small">&copy; 2024 - <span id="year"></span> Thanakorn Saejong Portfolio. All
+                    Rights Reserved.</p>
+                <div class="d-flex justify-content-center gap-3 mt-3">
+                    <a href="https://www.facebook.com/thanakorn.sae.jong.2024" class="text-white opacity-50"><i
+                            class="fab fa-facebook"></i></a>
+                    <a href="https://www.instagram.com/thanakornsaejong6/" class="text-white opacity-50"><i
+                            class="fab fa-instagram"></i></a>
+                    <a href="https://github.com/Pooh191" class="text-white opacity-50"><i class="fab fa-github"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modals -->
+    <!-- Modal: Login -->
+    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-5 pt-0 text-center">
+                    <div class="login-icon mb-4">
+                        <i class="fas fa-user-shield text-primary display-4"></i>
+                    </div>
+                    <h3 class="fw-bold mb-4">Admin Login</h3>
+                    <form id="loginForm">
+                        <div class="mb-3 text-start">
+                            <label for="loginEmail" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="loginEmail" placeholder="admin@example.com"
+                                required>
+                        </div>
+                        <div class="mb-4 text-start">
+                            <label for="loginPassword" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••"
+                                required>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold">Login</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: View Messages -->
+    <div class="modal fade" id="viewMessagesModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title fw-bold"><i
+                            class="fas fa-envelope-open-text text-primary me-2"></i>ข้อความติดต่อเข้า</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4 pt-0">
+                    <div id="admin-messages-list" class="row g-3" style="max-height: 500px; overflow-y: auto;">
+                        <div class="col-12 text-center py-5">
+                            <i class="fas fa-spinner fa-spin text-primary display-4 mb-3"></i>
+                            <p class="text-muted">กำลังโหลดข้อความ...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Back to Top -->
+    <button id="back-to-top" class="btn btn-primary rounded-circle shadow">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- AOS Animation -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Custom JS -->
+    <script src="js/main.js"></script>
+</body>
+
+</html>
