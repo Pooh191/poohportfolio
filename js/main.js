@@ -146,6 +146,114 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    // Generic Content Management
+    const sectionConfigs = {
+        preface: {
+            title: 'แก้ไข คำนำ (Preface)',
+            fields: [
+                { label: 'หัวข้อ', id: 'pTitle', type: 'text', srcId: 'preface-title' },
+                { label: 'พารากราฟ 1', id: 'pP1', type: 'textarea', srcId: 'preface-p1' },
+                { label: 'พารากราฟ 2', id: 'pP2', type: 'textarea', srcId: 'preface-p2' }
+            ]
+        },
+        sop: {
+            title: 'แก้ไข เรียงความแนะนำตัว',
+            fields: [
+                { label: 'เนื้อหา (รองรับ HTML)', id: 'sText', type: 'textarea', srcId: 'sop-text' }
+            ]
+        },
+        aboutIntro: {
+            title: 'แก้ไข แนะนำตัวสั้นๆ',
+            fields: [
+                { label: 'ข้อความแนะนำตัว', id: 'aIntro', type: 'textarea', srcId: 'about-intro-text' }
+            ]
+        },
+        aboutQuote: {
+            title: 'แก้ไข ข้อความอ้างอิง',
+            fields: [
+                { label: 'ข้อความในกล่อง', id: 'aQuote', type: 'textarea', srcId: 'about-quote-text' }
+            ]
+        },
+        goalBanner: {
+            title: 'แก้ไข เป้าหมายในชีวิต',
+            fields: [
+                { label: 'ป้ายกำกับ', id: 'gLabel', type: 'text', srcId: 'goal-label' },
+                { label: 'หัวข้อ', id: 'gTitle', type: 'text', srcId: 'goal-title' },
+                { label: 'คำพูดโปรย', id: 'gQuote', type: 'text', srcId: 'goal-quote' }
+            ]
+        }
+    };
+
+    window.openEditContent = (key) => {
+        const config = sectionConfigs[key];
+        if (!config) return;
+
+        document.getElementById('contentKey').value = key;
+        const modalTitle = document.querySelector('#editContentModal .modal-title');
+        if (modalTitle) modalTitle.innerText = config.title;
+
+        const container = document.getElementById('contentFields');
+        container.innerHTML = '';
+
+        config.fields.forEach(f => {
+            const val = document.getElementById(f.srcId)?.innerHTML.trim() || '';
+            const div = document.createElement('div');
+            div.className = 'mb-3';
+            div.innerHTML = `
+                <label class="form-label small fw-bold">${f.label}</label>
+                ${f.type === 'textarea'
+                    ? `<textarea class="form-control rounded-3" id="field-${f.id}" rows="5">${val}</textarea>`
+                    : `<input type="text" class="form-control rounded-3" id="field-${f.id}" value="${val}">`
+                }
+            `;
+            container.appendChild(div);
+        });
+
+        new bootstrap.Modal(document.getElementById('editContentModal')).show();
+    };
+
+    document.getElementById('editContentForm')?.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const key = document.getElementById('contentKey').value;
+        const config = sectionConfigs[key];
+        if (!config || !db) return;
+
+        const data = {};
+        config.fields.forEach(f => {
+            data[f.id] = document.getElementById(`field-${f.id}`).value;
+        });
+
+        db.collection('settings').doc('content').set({
+            [key]: data
+        }, { merge: true }).then(() => {
+            bootstrap.Modal.getInstance(document.getElementById('editContentModal')).hide();
+            Swal.fire('สำเร็จ', 'อัปเดตเนื้อหาเรียบร้อยแล้ว', 'success');
+            // Immediate UI Update
+            config.fields.forEach(f => {
+                const el = document.getElementById(f.srcId);
+                if (el) el.innerHTML = data[f.id];
+            });
+        });
+    });
+
+    function fetchGenericContent() {
+        if (!db) return;
+        db.collection('settings').doc('content').onSnapshot(doc => {
+            if (doc.exists) {
+                const allData = doc.data();
+                Object.keys(sectionConfigs).forEach(key => {
+                    const data = allData[key];
+                    if (data) {
+                        sectionConfigs[key].fields.forEach(f => {
+                            const el = document.getElementById(f.srcId);
+                            if (el && data[f.id]) el.innerHTML = data[f.id];
+                        });
+                    }
+                });
+            }
+        });
+    }
+
     // Dynamic Rendering Core
     const renderAll = () => {
         fetchProjects();
@@ -154,6 +262,7 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchGpax();
         fetchSkills();
         fetchMessages();
+        fetchGenericContent();
     };
 
     renderAll();
@@ -424,9 +533,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <div class="text-primary fw-bold" style="font-size: 0.75rem;">${data.level}% Proficiency</div>
                                 </div>
                             </div>
-                            <button class="btn btn-light text-danger btn-sm rounded-circle p-2 ms-2 hover-shadow" onclick="deleteItem('skills', '${data.id}')" title="ลบ">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-light text-warning btn-sm rounded-circle p-2 hover-shadow" onclick="openEditSkill('${data.id}', 'hard')" title="แก้ไข">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-light text-danger btn-sm rounded-circle p-2 hover-shadow" onclick="deleteItem('skills', '${data.id}')" title="ลบ">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
                         </div>
                     `;
                     adminList.appendChild(col);
@@ -474,9 +588,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                     <div class="text-info fw-bold" style="font-size: 0.75rem;">${data.level}</div>
                                 </div>
                             </div>
-                            <button class="btn btn-light text-danger btn-sm rounded-circle p-2 ms-2 hover-shadow" onclick="deleteItem('skills', '${doc.id}')" title="ลบ">
-                                <i class="fas fa-trash-alt"></i>
-                            </button>
+                            <div class="d-flex gap-1">
+                                <button class="btn btn-light text-warning btn-sm rounded-circle p-2 hover-shadow" onclick="openEditSkill('${doc.id}', 'soft')" title="แก้ไข">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn btn-light text-danger btn-sm rounded-circle p-2 hover-shadow" onclick="deleteItem('skills', '${doc.id}')" title="ลบ">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </div>
                         </div>
                     `;
                     adminList.appendChild(col);
@@ -859,6 +978,21 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
+    window.openEditSkill = (id, type) => {
+        db.collection('skills').doc(id).get().then(doc => {
+            const data = doc.data();
+            if (type === 'hard') {
+                document.getElementById('hSkillId').value = id;
+                document.getElementById('hSkillName').value = data.name;
+                document.getElementById('hSkillLevel').value = data.level;
+            } else {
+                document.getElementById('sSkillId').value = id;
+                document.getElementById('sSkillName').value = data.name;
+                document.getElementById('sSkillLevel').value = data.level;
+            }
+        });
+    };
+
     window.viewProjectDetail = (id) => {
         if (!db) return;
         db.collection('projects').doc(id).get().then(doc => {
@@ -921,28 +1055,31 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('hardSkillForm')?.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!db) return;
+        const id = document.getElementById('hSkillId').value;
         const name = document.getElementById('hSkillName').value;
         const level = parseInt(document.getElementById('hSkillLevel').value);
 
         Swal.fire({
-            title: 'ยืนยันเพิ่มทักษะหรือไม่?',
-            text: `ต้องการเพิ่มทักษะ ${name} ใช่หรือไม่?`,
+            title: id ? 'ยืนยันแก้ไขทักษะ?' : 'ยืนยันเพิ่มทักษะ?',
+            text: `ต้องการ${id ? 'แก้ไข' : 'เพิ่ม'}ทักษะ ${name} ใช่หรือไม่?`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#1e5622',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'เพิ่มทักษะ',
+            confirmButtonText: id ? 'แก้ไขทักษะ' : 'เพิ่มทักษะ',
             cancelButtonText: 'ยกเลิก',
             reverseButtons: true,
             customClass: { popup: 'rounded-4' }
         }).then((result) => {
             if (result.isConfirmed) {
-                db.collection('skills').add({
-                    name, level, type: 'hard', createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
+                const data = { name, level, type: 'hard', updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                const promise = id ? db.collection('skills').doc(id).update(data) : db.collection('skills').add({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+
+                promise.then(() => {
                     this.reset();
+                    document.getElementById('hSkillId').value = '';
                     Swal.fire({
-                        title: 'เพิ่มทักษะสำเร็จ',
+                        title: id ? 'แก้ไขทักษะสำเร็จ' : 'เพิ่มทักษะสำเร็จ',
                         icon: 'success',
                         confirmButtonColor: '#1e5622',
                         customClass: { title: 'text-success fw-bold', popup: 'rounded-4' }
@@ -955,28 +1092,31 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('softSkillForm')?.addEventListener('submit', function (e) {
         e.preventDefault();
         if (!db) return;
+        const id = document.getElementById('sSkillId').value;
         const name = document.getElementById('sSkillName').value;
         const level = document.getElementById('sSkillLevel').value;
 
         Swal.fire({
-            title: 'ยืนยันเพิ่มทักษะหรือไม่?',
-            text: `ต้องการเพิ่มทักษะ ${name} ใช่หรือไม่?`,
+            title: id ? 'ยืนยันแก้ไขทักษะ?' : 'ยืนยันเพิ่มทักษะ?',
+            text: `ต้องการ${id ? 'แก้ไข' : 'เพิ่ม'}ทักษะ ${name} ใช่หรือไม่?`,
             icon: 'question',
             showCancelButton: true,
             confirmButtonColor: '#1e5622',
             cancelButtonColor: '#6c757d',
-            confirmButtonText: 'เพิ่มทักษะ',
+            confirmButtonText: id ? 'แก้ไขทักษะ' : 'เพิ่มทักษะ',
             cancelButtonText: 'ยกเลิก',
             reverseButtons: true,
             customClass: { popup: 'rounded-4' }
         }).then((result) => {
             if (result.isConfirmed) {
-                db.collection('skills').add({
-                    name, level, type: 'soft', createdAt: firebase.firestore.FieldValue.serverTimestamp()
-                }).then(() => {
+                const data = { name, level, type: 'soft', updatedAt: firebase.firestore.FieldValue.serverTimestamp() };
+                const promise = id ? db.collection('skills').doc(id).update(data) : db.collection('skills').add({ ...data, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
+
+                promise.then(() => {
                     this.reset();
+                    document.getElementById('sSkillId').value = '';
                     Swal.fire({
-                        title: 'เพิ่มทักษะสำเร็จ',
+                        title: id ? 'แก้ไขทักษะสำเร็จ' : 'เพิ่มทักษะสำเร็จ',
                         icon: 'success',
                         confirmButtonColor: '#1e5622',
                         customClass: { title: 'text-success fw-bold', popup: 'rounded-4' }
