@@ -8,9 +8,7 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800&family=Kanit:wght@200;300;400;500;600&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- AOS Animation -->
@@ -42,9 +40,10 @@
 
     <!-- Floating Socials -->
     <div class="floating-socials d-none d-lg-flex">
-        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
-        <a href="#" class="social-link"><i class="fab fa-line"></i></a>
+        <a href="https://www.facebook.com/thanakorn.sae.jong.2024" class="social-link"><i
+                class="fab fa-facebook-f"></i></a>
+        <a href="https://github.com/Pooh191" class="social-link"><i class="fab fa-github"></i></a>
+        <a href="https://www.instagram.com/thanakornsaejong6/" class="social-link"><i class="fab fa-instagram"></i></a>
         <div class="social-line"></div>
     </div>
 
@@ -64,14 +63,22 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#home">หน้าแรก</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#about">ข้อมูลส่วนตัว</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#education">การศึกษา</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills">ทักษะ</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#news">ข่าวสาร</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#experience">ผลงาน</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#certificates">เกียรติบัตร</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">ติดต่อ</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#home"><i class="fas fa-home me-2"></i>หน้าแรก</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#about"><i
+                                class="fas fa-user me-2"></i>ข้อมูลส่วนตัว</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#education"><i
+                                class="fas fa-graduation-cap me-2"></i>การศึกษา</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#skills"><i class="fas fa-tools me-2"></i>ทักษะ</a>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="#news"><i
+                                class="fas fa-newspaper me-2"></i>ข่าวสาร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#experience"><i
+                                class="fas fa-briefcase me-2"></i>ผลงาน</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#certificates"><i
+                                class="fas fa-award me-2"></i>เกียรติบัตร</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#contact"><i
+                                class="fas fa-paper-plane me-2"></i>ติดต่อ</a></li>
                     <li class="nav-item admin-only d-none"><a class="nav-link text-primary fw-bold" href="#"
                             data-bs-toggle="modal" data-bs-target="#viewMessagesModal"><i
                                 class="fas fa-envelope me-1"></i>ข้อความ</a></li>
@@ -602,52 +609,57 @@
     <div class="modal fade" id="editSkillsModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
-                <div class="modal-header border-0">
-                    <h5 class="modal-title fw-bold">จัดการทักษะและความสามารถ</h5>
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold"><i
+                            class="fas fa-layer-group text-primary me-2"></i>จัดการทักษะและความสามารถ</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <ul class="nav nav-pills mb-4 justify-content-center" role="tablist">
+                    <ul class="nav nav-pills mb-4 justify-content-center admin-nav-pills" role="tablist">
                         <li class="nav-item">
                             <button class="nav-link active rounded-pill px-4 me-2" data-bs-toggle="pill"
-                                data-bs-target="#edit-hard-skills">Hard Skills</button>
+                                data-bs-target="#edit-hard-skills">
+                                <i class="fas fa-brain me-2"></i>Hard Skills
+                            </button>
                         </li>
                         <li class="nav-item">
                             <button class="nav-link rounded-pill px-4" data-bs-toggle="pill"
-                                data-bs-target="#edit-soft-skills">Soft Skills</button>
+                                data-bs-target="#edit-soft-skills">
+                                <i class="fas fa-heart me-2"></i>Soft Skills
+                            </button>
                         </li>
                     </ul>
                     <div class="tab-content">
                         <!-- Edit Hard Skills -->
                         <div class="tab-pane fade show active" id="edit-hard-skills">
                             <form id="hardSkillForm" class="mb-4">
-                                <div class="bg-light p-4 rounded-4 shadow-sm border">
-                                    <h6 class="fw-bold mb-3 d-flex align-items-center">
-                                        <i class="fas fa-tools text-primary me-2"></i> เพิ่มทักษะใหม่ (Hard Skill)
+                                <div class="admin-input-card p-4 rounded-4 shadow-sm border">
+                                    <h6 class="fw-bold mb-3 d-flex align-items-center text-primary">
+                                        <i class="fas fa-plus-circle me-2"></i> เพิ่มทักษะใหม่ (Hard Skill)
                                     </h6>
                                     <div class="row g-3 align-items-end">
                                         <div class="col-md-5">
                                             <label class="form-label small fw-bold">ชื่อทักษะ / ภาษา</label>
                                             <div class="input-group">
-                                                <span class="input-group-text bg-white border-end-0"><i
-                                                        class="fas fa-code text-muted"></i></span>
-                                                <input type="text" class="form-control border-start-0 ps-0"
+                                                <span class="input-group-text bg-light border-end-0"><i
+                                                        class="fas fa-code text-primary"></i></span>
+                                                <input type="text" class="form-control border-start-0 ps-0 bg-light"
                                                     id="hSkillName" placeholder="เช่น HTML, Photoshop" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
-                                            <label class="form-label small fw-bold">ระดับความชำนาญ (%)</label>
+                                            <label class="form-label small fw-bold">ความชำนาญ (%)</label>
                                             <div class="input-group">
-                                                <span class="input-group-text bg-white border-end-0"><i
-                                                        class="fas fa-percentage text-muted"></i></span>
-                                                <input type="number" class="form-control border-start-0 ps-0"
+                                                <span class="input-group-text bg-light border-end-0"><i
+                                                        class="fas fa-percentage text-primary"></i></span>
+                                                <input type="number" class="form-control border-start-0 ps-0 bg-light"
                                                     id="hSkillLevel" min="0" max="100" placeholder="0-100" required>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <button type="submit"
-                                                class="btn btn-primary w-100 rounded-pill py-2 shadow-sm">
-                                                <i class="fas fa-plus me-1"></i> เพิ่มทักษะ
+                                                class="btn btn-primary w-100 rounded-pill py-2 shadow-sm fw-bold">
+                                                <i class="fas fa-save me-1"></i> บันทึก
                                             </button>
                                         </div>
                                     </div>
@@ -665,36 +677,38 @@
                         <!-- Edit Soft Skills -->
                         <div class="tab-pane fade" id="edit-soft-skills">
                             <form id="softSkillForm" class="mb-4">
-                                <div class="bg-light p-4 rounded-4 shadow-sm border border-info-subtle">
-                                    <h6 class="fw-bold mb-3 d-flex align-items-center">
-                                        <i class="fas fa-heart text-info me-2"></i> เพิ่มทักษะใหม่ (Soft Skill)
+                                <div class="admin-input-card p-4 rounded-4 shadow-sm border border-info-subtle"
+                                    style="background: rgba(13, 202, 240, 0.02);">
+                                    <h6 class="fw-bold mb-3 d-flex align-items-center text-info">
+                                        <i class="fas fa-plus-circle me-2"></i> เพิ่มทักษะใหม่ (Soft Skill)
                                     </h6>
                                     <div class="row g-3 align-items-end">
                                         <div class="col-md-5">
                                             <label class="form-label small fw-bold">ชื่อทักษะ / ความสามารถ</label>
                                             <div class="input-group">
-                                                <span class="input-group-text bg-white border-end-0"><i
-                                                        class="fas fa-users text-muted"></i></span>
-                                                <input type="text" class="form-control border-start-0 ps-0"
+                                                <span class="input-group-text bg-light border-end-0"><i
+                                                        class="fas fa-users text-info"></i></span>
+                                                <input type="text" class="form-control border-start-0 ps-0 bg-light"
                                                     id="sSkillName" placeholder="เช่น การทำงานเป็นทีม" required>
                                             </div>
                                         </div>
                                         <div class="col-md-4">
                                             <label class="form-label small fw-bold">ระดับ</label>
                                             <div class="input-group">
-                                                <span class="input-group-text bg-white border-end-0"><i
-                                                        class="fas fa-star text-muted"></i></span>
-                                                <select class="form-select border-start-0 ps-0" id="sSkillLevel">
-                                                    <option value="เชี่ยวชาญ">เชี่ยวชาญ (Expert)</option>
-                                                    <option value="คล่องแคล่ว">คล่องแคล่ว (Fluent)</option>
-                                                    <option value="ระดับพื้นฐาน">ระดับพื้นฐาน (Basic)</option>
+                                                <span class="input-group-text bg-light border-end-0"><i
+                                                        class="fas fa-award text-info"></i></span>
+                                                <select class="form-select border-start-0 ps-0 bg-light"
+                                                    id="sSkillLevel">
+                                                    <option value="ยอดเยี่ยม (Expert)">ยอดเยี่ยม (Expert)</option>
+                                                    <option value="ดีมาก (Proficient)">ดีมาก (Proficient)</option>
+                                                    <option value="ระดับพื้นฐาน (Basic)">ระดับพื้นฐาน (Basic)</option>
                                                 </select>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <button type="submit"
-                                                class="btn btn-info text-white w-100 rounded-pill py-2 shadow-sm">
-                                                <i class="fas fa-plus me-1"></i> เพิ่มทักษะ
+                                                class="btn btn-info text-white w-100 rounded-pill py-2 shadow-sm fw-bold">
+                                                <i class="fas fa-save me-1"></i> บันทึก
                                             </button>
                                         </div>
                                     </div>
