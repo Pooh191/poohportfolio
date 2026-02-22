@@ -132,30 +132,44 @@
                 <div class="col-lg-5" data-aos="fade-right">
                     <div class="card border-0 shadow-lg p-5 bg-primary text-white h-100 overflow-hidden position-relative"
                         style="border-radius: 30px;">
+                        <div class="admin-only d-none position-absolute top-0 end-0 p-3" style="z-index: 5;">
+                            <button class="btn btn-sm btn-outline-light rounded-circle"
+                                onclick="openEditContent('preface')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
                         <div class="position-absolute top-0 end-0 p-4 opacity-10">
                             <i class="fas fa-quote-right display-1"></i>
                         </div>
-                        <h3 class="fw-bold mb-4">คำนำ (Preface)</h3>
-                        <p class="opacity-90 fs-5 mb-4">แฟ้มสะสมผลงาน (Portfolio) เล่มนี้
+                        <h3 class="fw-bold mb-4" id="preface-title">คำนำ (Preface)</h3>
+                        <p class="opacity-90 fs-5 mb-4" id="preface-p1">แฟ้มสะสมผลงาน (Portfolio) เล่มนี้
                             ข้าพเจ้าจัดทำขึ้นเพื่อนำเสนอทักษะและความมุ่งมั่นในสายงาน
                             <strong>ด้านการศึกษาและวิทยาการคอมพิวเตอร์</strong>
                         </p>
-                        <p class="opacity-90">
+                        <p class="opacity-90" id="preface-p2">
                             ข้าพเจ้าหวังว่าข้อมูลเหล่านี้จะเป็นประโยชน์ต่อคณะกรรมการในการพิจารณารับข้าพเจ้าเข้าศึกษาต่อ
                         </p>
                     </div>
                 </div>
                 <div class="col-lg-7" data-aos="fade-left">
-                    <h2 class="section-title text-start mb-4">🎓 เรียงความแนะนำตัว (Statement of Purpose)</h2>
+                    <div class="d-flex justify-content-between align-items-center mb-4">
+                        <h2 class="section-title text-start mb-0">🎓 เรียงความแนะนำตัว (Statement of Purpose)</h2>
+                        <button class="btn btn-sm btn-outline-primary rounded-circle admin-only d-none"
+                            onclick="openEditContent('sop')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
                     <div class="sop-content border-start border-primary border-5">
-                        <p class="fs-5 mb-4">"จากประสบการณ์ที่คุณครูมอบแรงบันดาลใจในวัยเด็ก
-                            ข้าพเจ้ามีความตั้งใจที่จะเป็น <strong>ครูคอมพิวเตอร์</strong>
-                            ที่สามารถถ่ายทอดเทคโนโลยีให้เข้ากับบริบทการเรียนรู้ของไทย
-                            และในอนาคตเมื่อเกษียณจากราชการ
-                            จะก้าวสู่การเป็นนักการเมืองเพื่อขับเคลื่อนนโยบายด้านการศึกษา..."</p>
-                        <p class="mb-0 fs-6 text-muted">"การรวมทักษะการสอนและทักษะด้านโปรแกรมมิ่งเข้าด้วยกัน
-                            คือรากฐานสำคัญ สู่การพัฒนาระบบการศึกษาด้วยนโยบายที่เข้าใจปัญหาอย่างแท้จริง..."
-                        </p>
+                        <div id="sop-text">
+                            <p class="fs-5 mb-4">"จากประสบการณ์ที่คุณครูมอบแรงบันดาลใจในวัยเด็ก
+                                ข้าพเจ้ามีความตั้งใจที่จะเป็น <strong>ครูคอมพิวเตอร์</strong>
+                                ที่สามารถถ่ายทอดเทคโนโลยีให้เข้ากับบริบทการเรียนรู้ของไทย
+                                และในอนาคตเมื่อเกษียณจากราชการ
+                                จะก้าวสู่การเป็นนักการเมืองเพื่อขับเคลื่อนนโยบายด้านการศึกษา..."</p>
+                            <p class="mb-0 fs-6 text-muted">"การรวมทักษะการสอนและทักษะด้านโปรแกรมมิ่งเข้าด้วยกัน
+                                คือรากฐานสำคัญ สู่การพัฒนาระบบการศึกษาด้วยนโยบายที่เข้าใจปัญหาอย่างแท้จริง..."
+                            </p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -604,6 +618,31 @@
         </div>
     </div>
 
+    <!-- Modal: Edit Site Content -->
+    <div class="modal fade" id="editContentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-edit text-primary me-2"></i>แก้ไขเนื้อหาเว็บไซต์
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editContentForm">
+                        <input type="hidden" id="contentKey">
+                        <div id="contentFields">
+                            <!-- Fields will be dynamically injected -->
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button type="submit"
+                                class="btn btn-primary-gradient rounded-pill px-5 py-2 fw-bold">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: Admin Login -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-sm">
@@ -702,6 +741,7 @@
                         <!-- Edit Hard Skills -->
                         <div class="tab-pane fade show active" id="edit-hard-skills">
                             <form id="hardSkillForm" class="mb-4">
+                                <input type="hidden" id="hSkillId">
                                 <div class="admin-input-card p-4 rounded-4 shadow-sm border">
                                     <h6 class="fw-bold mb-3 d-flex align-items-center text-primary">
                                         <i class="fas fa-plus-circle me-2"></i> เพิ่มทักษะใหม่ (Hard Skill)
@@ -746,6 +786,7 @@
                         <!-- Edit Soft Skills -->
                         <div class="tab-pane fade" id="edit-soft-skills">
                             <form id="softSkillForm" class="mb-4">
+                                <input type="hidden" id="sSkillId">
                                 <div class="admin-input-card p-4 rounded-4 shadow-sm border border-info-subtle"
                                     style="background: rgba(13, 202, 240, 0.02);">
                                     <h6 class="fw-bold mb-3 d-flex align-items-center text-info">
