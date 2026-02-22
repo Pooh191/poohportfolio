@@ -216,11 +216,17 @@
             </div>
 
             <!-- Goal Banner -->
-            <div class="goal-banner" data-aos="zoom-in">
+            <div class="goal-banner mt-5" data-aos="zoom-in">
+                <div class="admin-only d-none position-absolute top-0 end-0 p-3" style="z-index: 5;">
+                    <button class="btn btn-sm btn-outline-light rounded-circle" onclick="openEditContent('goalBanner')">
+                        <i class="fas fa-edit"></i>
+                    </button>
+                </div>
                 <div class="goal-banner-content">
-                    <p class="mb-2 fw-bold opacity-75">เป้าหมายในชีวิต</p>
-                    <h1 class="fw-bold mb-0 display-5">ครูคอมพิวเตอร์ สู่นักการเมืองเพื่อการศึกษา</h1>
-                    <p class="mt-3 opacity-75 fs-5">“พัฒนาการศึกษาด้วยเทคโนโลยี ขับเคลื่อนนโยบายเพื่ออนาคต”</p>
+                    <p class="mb-2 fw-bold opacity-75" id="goal-label">เป้าหมายในชีวิต</p>
+                    <h1 class="fw-bold mb-0 display-5" id="goal-title">ครูคอมพิวเตอร์ สู่นักการเมืองเพื่อการศึกษา</h1>
+                    <p class="mt-3 opacity-75 fs-5" id="goal-quote">“พัฒนาการศึกษาด้วยเทคโนโลยี
+                        ขับเคลื่อนนโยบายเพื่ออนาคต”</p>
                 </div>
                 <div class="goal-icon-float d-none d-md-flex">
                     <i class="fas fa-bullseye"></i>
@@ -257,19 +263,20 @@
 
             <!-- Text Content -->
             <div class="row justify-content-center">
-                <div class="col-lg-10 about-text-content">
-                    <h1 class="text-primary fw-bold mb-5" data-aos="fade-up">มาทำความรู้จักตัวผมกัน!</h1>
-
-                    <p data-aos="fade-up">
-                        สวัสดีครับผมชื่อนายธนากร แซ่จอง ชื่อเล่นภู อายุ <span
-                            class="dynamic-age age-simple text-primary fw-bold">กำลังคำนวณ...</span>
-                        โรงเรียนสุรวิทยาคาร ผมมีความใฝ่ฝันและเป้าหมายชีวิตที่ชัดเจน
-                        คือการก้าวสู่การเป็นข้าราชการครู และเมื่อเกษียณอายุราชการจะก้าวสู่วงการการเมือง
-                        เพื่อขับเคลื่อนนโยบายด้านการศึกษาโดยเฉพาะ
-                        ผมเชื่อมั่นว่าการมีประสบการณ์ในห้องเรียนจะทำให้เข้าใจปัญหาการศึกษาอย่างแท้จริง
-                        และสามารถผลักดันนโยบายที่ตอบโจทย์ทั้งครูและนักเรียนได้
+                <div class="col-lg-7">
+                    <div class="d-flex justify-content-between align-items-center mb-3">
+                        <h2 class="display-4 fw-bold" data-aos="fade-up">ข้อมูลส่วนตัว</h2>
+                        <button class="btn btn-sm btn-outline-primary rounded-circle admin-only d-none"
+                            onclick="openEditContent('aboutIntro')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                    </div>
+                    <p class="fs-5 text-muted mb-4" data-aos="fade-up" data-aos-delay="100" id="about-intro-text">
+                        สวัสดีครับผมชื่อนายธนากร แซ่จอง หรือ "พูห์" อายุ <span class="age-simple"></span> ปี
+                        ปัจจุบันกำลังศึกษาอยู่ชั้นมัธยมศึกษาปีที่ 6 โรงเรียนสุรวิทยาคาร
+                        ผมมีความฝันที่อยากจะเป็นครูคอมพิวเตอร์
+                        และในอนาคตอยากจะเป็นนักการเมืองเพื่อเข้ามาพัฒนาการศึกษาไทยครับ
                     </p>
-
                     <p data-aos="fade-up">
                         สำหรับผมแล้ว แรงบันดาลใจคือกุญแจสำคัญสู่ความสำเร็จในชีวิต
                         เพราะชีวิตที่ผ่านมาคือครูที่สอนบทเรียนอันมีค่าสำหรับผม
@@ -279,11 +286,19 @@
 
                     <h2 class="mt-5" data-aos="fade-up">ทำไมต้องเป็นครู แล้วค่อยเป็นนักการเมือง?</h2>
 
-                    <div class="about-quote-box" data-aos="fade-left"
+                    <div class="about-quote-box position-relative" data-aos="fade-left"
                         style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 2rem; border-radius: 15px; font-size: 1.2rem; box-shadow: 0 10px 20px rgba(102, 126, 234, 0.25); text-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-                        “ผมเชื่อว่าการเป็นครูจะทำให้เข้าใจปัญหาการศึกษาอย่างลึกซึ้ง
-                        และเมื่อเข้าใจปัญหาอย่างแท้จริงแล้ว จึงจะสามารถแก้ไขได้อย่างถูกจุด
-                        การเป็นนักการเมืองจึงเป็นเครื่องมือในการขยายผลการแก้ปัญหาในระดับนโยบาย”
+                        <div class="admin-only d-none position-absolute top-0 end-0 p-3" style="z-index: 5;">
+                            <button class="btn btn-sm btn-outline-light rounded-circle"
+                                onclick="openEditContent('aboutQuote')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                        </div>
+                        <div id="about-quote-text">
+                            “ผมเชื่อว่าการเป็นครูจะทำให้เข้าใจปัญหาการศึกษาอย่างลึกซึ้ง
+                            และเมื่อเข้าใจปัญหาอย่างแท้จริงแล้ว จึงจะสามารถแก้ไขได้อย่างถูกจุด
+                            การเป็นนักการเมืองจึงเป็นเครื่องมือในการขยายผลการแก้ปัญหาในระดับนโยบาย”
+                        </div>
                     </div>
 
                     <h3 data-aos="fade-up">ความเชื่อมโยงระหว่างครูและนักการเมือง</h3>
@@ -481,6 +496,31 @@
     </footer>
 
     <!-- Modals -->
+    <!-- Modal: Edit Site Content -->
+    <div class="modal fade" id="editContentModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 20px;">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-edit text-primary me-2"></i>แก้ไขเนื้อหาเว็บไซต์
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <form id="editContentForm">
+                        <input type="hidden" id="contentKey">
+                        <div id="contentFields">
+                            <!-- Fields will be dynamically injected -->
+                        </div>
+                        <div class="mt-4 text-end">
+                            <button type="submit"
+                                class="btn btn-primary-gradient rounded-pill px-5 py-2 fw-bold">บันทึกการแก้ไข</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal: Login -->
     <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -488,23 +528,16 @@
                 <div class="modal-header border-0 pb-0">
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body p-5 pt-0 text-center">
-                    <div class="login-icon mb-4">
-                        <i class="fas fa-user-shield text-primary display-4"></i>
-                    </div>
-                    <h3 class="fw-bold mb-4">Admin Login</h3>
+                <div class="modal-body p-4 text-center">
+                    <i class="fas fa-user-shield text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="fw-bold mb-3">Admin Login</h5>
                     <form id="loginForm">
-                        <div class="mb-3 text-start">
-                            <label for="loginEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="loginEmail" placeholder="admin@example.com"
-                                required>
+                        <div class="mb-3">
+                            <input type="password" class="form-control rounded-pill text-center" id="adminPassword"
+                                placeholder="รหัสผ่าน" required>
                         </div>
-                        <div class="mb-4 text-start">
-                            <label for="loginPassword" class="form-label">Password</label>
-                            <input type="password" class="form-control" id="loginPassword" placeholder="••••••••"
-                                required>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100 py-3 rounded-pill fw-bold">Login</button>
+                        <button type="submit"
+                            class="btn btn-primary btn-primary-gradient rounded-pill px-4 w-100">เข้าสู่ระบบ</button>
                     </form>
                 </div>
             </div>
