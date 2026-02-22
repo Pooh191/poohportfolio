@@ -404,17 +404,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     const col = document.createElement('div');
                     col.className = 'col-md-6';
                     col.innerHTML = `
-                        <div class="admin-skill-card d-flex justify-content-between align-items-center p-3 rounded-3 bg-white border shadow-sm h-100">
+                        <div class="admin-skill-card d-flex justify-content-between align-items-center p-3 rounded-4 bg-white border shadow-sm h-100">
                             <div class="d-flex align-items-center">
-                                <div class="skill-icon-sm me-3 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-                                    <i class="fas fa-code small"></i>
+                                <div class="skill-icon-sm me-3 bg-primary bg-opacity-10 text-primary rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                    <i class="fas fa-code"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-bold small">${data.name}</div>
-                                    <div class="text-muted" style="font-size: 0.7rem;">${data.level}% Proficiency</div>
+                                    <div class="fw-bold text-dark mb-0">${data.name}</div>
+                                    <div class="text-primary fw-bold" style="font-size: 0.75rem;">${data.level}% Proficiency</div>
                                 </div>
                             </div>
-                            <button class="btn btn-link text-danger p-0 ms-2" onclick="deleteItem('skills', '${data.id}')" title="ลบ">
+                            <button class="btn btn-light text-danger btn-sm rounded-circle p-2 ms-2 hover-shadow" onclick="deleteItem('skills', '${data.id}')" title="ลบ">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
@@ -454,17 +454,17 @@ document.addEventListener('DOMContentLoaded', function () {
                     const col = document.createElement('div');
                     col.className = 'col-md-6';
                     col.innerHTML = `
-                        <div class="admin-skill-card d-flex justify-content-between align-items-center p-3 rounded-3 bg-white border shadow-sm h-100">
+                        <div class="admin-skill-card d-flex justify-content-between align-items-center p-3 rounded-4 bg-white border shadow-sm h-100">
                             <div class="d-flex align-items-center">
-                                <div class="skill-icon-sm me-3 bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center" style="width: 35px; height: 35px;">
-                                    <i class="fas fa-heart small"></i>
+                                <div class="skill-icon-sm me-3 bg-info bg-opacity-10 text-info rounded-circle d-flex align-items-center justify-content-center" style="width: 42px; height: 42px;">
+                                    <i class="fas fa-heart"></i>
                                 </div>
                                 <div>
-                                    <div class="fw-bold small">${data.name}</div>
-                                    <div class="text-muted" style="font-size: 0.7rem;">Level: ${data.level}</div>
+                                    <div class="fw-bold text-dark mb-0">${data.name}</div>
+                                    <div class="text-info fw-bold" style="font-size: 0.75rem;">${data.level}</div>
                                 </div>
                             </div>
-                            <button class="btn btn-link text-danger p-0 ms-2" onclick="deleteItem('skills', '${doc.id}')" title="ลบ">
+                            <button class="btn btn-light text-danger btn-sm rounded-circle p-2 ms-2 hover-shadow" onclick="deleteItem('skills', '${doc.id}')" title="ลบ">
                                 <i class="fas fa-trash-alt"></i>
                             </button>
                         </div>
