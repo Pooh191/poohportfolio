@@ -291,6 +291,13 @@
                     <p class="mt-3 text-muted">กำลังโหลดข้อมูลข่าวสาร...</p>
                 </div>
             </div>
+            <!-- Show More Button -->
+            <div class="text-center mt-5 d-none">
+                <button id="show-more-news" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold shadow-sm"
+                    onclick="toggleItems('news')" data-expanded="false">
+                    ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>
+                </button>
+            </div>
         </div>
     </section>
 
@@ -337,6 +344,14 @@
                     <div class="row g-4" id="projects-container">
                         <!-- Projects from Firebase -->
                     </div>
+                    <!-- Show More Button -->
+                    <div class="text-center mt-4 d-none">
+                        <button id="show-more-projects"
+                            class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold shadow-sm"
+                            onclick="toggleItems('projects')" data-expanded="false">
+                            ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>
+                        </button>
+                    </div>
                 </div>
 
                 <div class="col-12 mt-5" data-aos="fade-up">
@@ -344,6 +359,14 @@
                         📢 กิจกรรม (Activities)</h4>
                     <div class="row g-4" id="activities-container">
                         <!-- Activities from Firebase -->
+                    </div>
+                    <!-- Show More Button -->
+                    <div class="text-center mt-4 d-none">
+                        <button id="show-more-activities"
+                            class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold shadow-sm"
+                            onclick="toggleItems('activities')" data-expanded="false">
+                            ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -369,6 +392,13 @@
                 <div class="col-12 text-center py-4">
                     <div class="spinner-border text-primary spinner-border-sm" role="status"></div>
                 </div>
+            </div>
+            <!-- Show More Button -->
+            <div class="text-center mt-5 d-none">
+                <button id="show-more-certs" class="btn btn-outline-primary rounded-pill px-5 py-2 fw-bold shadow-sm"
+                    onclick="toggleItems('certs')" data-expanded="false">
+                    ดูเพิ่มเติม <i class="fas fa-chevron-down ms-2"></i>
+                </button>
             </div>
         </div>
     </section>
