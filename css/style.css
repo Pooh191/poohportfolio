@@ -29,28 +29,67 @@
 }
 
 [data-theme="dark"] {
-    --primary-color: #60a5fa;
-    --secondary-color: #c084fc;
-    --dark-color: #f1f5f9;
-    --light-bg: #020617;
+    --primary-color: #3b82f6;
+    --secondary-color: #a855f7;
+    --dark-color: #f8fafc;
+    --light-bg: #0f172a;
     --text-main: #f1f5f9;
     --text-muted: #94a3b8;
-    --card-bg: #0f172a;
+    --card-bg: #111827;
     --body-bg: #020617;
-    --glass-bg: rgba(15, 23, 42, 0.8);
-    --gradient-primary: linear-gradient(135deg, #3b82f6 0%, #a855f7 100%);
-    --grid-color: rgba(255, 255, 255, 0.05);
-    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-bg: rgba(15, 23, 42, 0.85);
+    --gradient-primary: linear-gradient(135deg, #2563eb 0%, #7c3aed 100%);
+    --grid-color: rgba(255, 255, 255, 0.02);
+    --glass-border: rgba(255, 255, 255, 0.08);
+    --border-color: rgba(255, 255, 255, 0.05);
 }
 
-[data-theme="dark"] .bg-white,
-[data-theme="dark"] .bg-light {
+[data-theme="dark"] .text-muted,
+[data-theme="dark"] .small,
+[data-theme="dark"] p.text-muted {
+    color: var(--text-muted) !important;
+    opacity: 0.9;
+}
+
+[data-theme="dark"] .text-dark {
+    color: var(--text-main) !important;
+}
+
+[data-theme="dark"] .border-top,
+[data-theme="dark"] .border-bottom,
+[data-theme="dark"] .border {
+    border-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+[data-theme="dark"] .bg-white {
     background-color: var(--body-bg) !important;
 }
 
+[data-theme="dark"] .bg-light {
+    background-color: var(--light-bg) !important;
+}
+
 [data-theme="dark"] .card {
-    background-color: var(--card-bg) !important;
-    border-color: var(--grid-color);
+    background: var(--card-bg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+[data-theme="dark"] .card:hover {
+    border-color: var(--primary-color) !important;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
 }
 
 /* Scroll Progress */
@@ -492,6 +531,11 @@ body.loading {
     background: var(--gradient-primary);
     border-radius: 20px;
     transition: width 1.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+    box-shadow: 0 0 15px rgba(37, 99, 235, 0.3);
+}
+
+[data-theme="dark"] .skill-progress-bar {
+    box-shadow: 0 0 20px rgba(37, 99, 235, 0.4);
 }
 
 .skill-badge {
@@ -598,7 +642,48 @@ body.loading {
     background-color: var(--body-bg);
 }
 
-/* Stats Section */
+[data-theme="dark"] .project-card,
+[data-theme="dark"] .cert-item,
+[data-theme="dark"] .news-item-card .card,
+[data-theme="dark"] .gpax-card,
+[data-theme="dark"] .skill-group-card {
+    background: var(--card-bg) !important;
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5) !important;
+    position: relative;
+    overflow: hidden;
+}
+
+[data-theme="dark"] .project-card::after,
+[data-theme="dark"] .cert-item::after,
+[data-theme="dark"] .news-item-card .card::after,
+[data-theme="dark"] .gpax-card::after,
+[data-theme="dark"] .skill-group-card::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+}
+
+[data-theme="dark"] .project-card .p-4,
+[data-theme="dark"] .cert-item .p-4,
+[data-theme="dark"] .news-item-card .card-body {
+    background-color: transparent !important;
+}
+
+[data-theme="dark"] .section-title,
+[data-theme="dark"] .display-1,
+[data-theme="dark"] .display-3 {
+    text-shadow: 0 0 20px rgba(96, 165, 250, 0.2);
+}
+
+[data-theme="dark"] .title-line {
+    box-shadow: 0 0 15px var(--primary-color);
+}
+
 .stats-section {
     background: linear-gradient(rgba(37, 99, 235, 0.9), rgba(37, 99, 235, 0.9)),
         url('https://images.unsplash.com/photo-1497215728101-856f4ea42174?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
@@ -886,8 +971,9 @@ body.loading {
 }
 
 [data-theme="dark"] .contact-form-box {
-    background: rgba(0, 0, 0, 0.2) !important;
-    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    background: rgba(30, 41, 59, 0.3) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6) !important;
 }
 
 .contact-form-box .form-label {
@@ -1403,13 +1489,18 @@ body.loading {
 
 .section-glow {
     position: absolute;
-    width: 400px;
-    height: 400px;
+    width: 600px;
+    height: 600px;
     background: radial-gradient(circle, var(--primary-color), transparent 70%);
-    opacity: 0.03;
-    filter: blur(80px);
+    opacity: 0.08;
+    filter: blur(100px);
     z-index: -1;
     pointer-events: none;
+}
+
+[data-theme="dark"] .section-glow {
+    opacity: 0.15;
+    filter: blur(120px);
 }
 
 .glow-top-right {
@@ -1449,4 +1540,57 @@ html {
 
 .btn:active {
     transform: scale(0.95);
+}
+
+[data-theme="dark"] .btn-link {
+    color: var(--primary-color) !important;
+}
+
+[data-theme="dark"] .timeline-item-v2 p.text-muted {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .gpax-card p.text-muted {
+    color: var(--text-muted) !important;
+    opacity: 0.9;
+}
+
+[data-theme="dark"] .bg-soft-primary {
+    background-color: rgba(96, 165, 250, 0.15) !important;
+}
+
+/* Dark Mode Navigation & UI Refinements */
+[data-theme="dark"] .navbar-brand {
+    color: var(--dark-color) !important;
+}
+
+[data-theme="dark"] .nav-link {
+    color: var(--text-muted) !important;
+}
+
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.active {
+    color: var(--primary-color) !important;
+}
+
+[data-theme="dark"] .navbar-toggler {
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .navbar-toggler-icon {
+    filter: invert(1);
+}
+
+[data-theme="dark"] img:not(.profile-img):not(.school-logo-img) {
+    filter: brightness(0.8) contrast(1.1);
+    transition: filter 0.5s ease;
+}
+
+[data-theme="dark"] img:hover {
+    filter: brightness(1) contrast(1);
+}
+
+[data-theme="dark"] .skill-badge {
+    background: var(--light-bg);
+    border-color: var(--glass-border);
 }
