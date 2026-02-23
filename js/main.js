@@ -1520,13 +1520,13 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Dynamic Age Calculation
     function updateDynamicAge() {
-        const ageElements = document.querySelectorAll('.dynamic-age');
+        const ageElements = document.querySelectorAll('.dynamic-age, .age-simple');
         if (ageElements.length === 0) return;
 
         // Birthday: March 20, 2011 (based on previous user edit)
         const birthDate = new Date(2011, 2, 20, 0, 0, 0);
 
-        setInterval(() => {
+        const update = () => {
             const now = new Date();
 
             let years = now.getFullYear() - birthDate.getFullYear();
@@ -1561,7 +1561,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 </div>
             `;
 
-            const ageSimple = `${years} ปี ${months} เดือน ${days} วัน ${hours} ชม. ${minutes} น. ${seconds} ว.`;
+            const ageSimple = `${years}`;
 
             ageElements.forEach(el => {
                 if (el.classList.contains('age-simple')) {
@@ -1570,7 +1570,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     if (el.innerHTML !== ageFull) el.innerHTML = ageFull;
                 }
             });
-        }, 1000);
+        };
+
+        update();
+        setInterval(update, 1000);
     }
 
     updateDynamicAge();
