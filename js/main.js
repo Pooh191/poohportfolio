@@ -637,7 +637,7 @@ document.addEventListener('DOMContentLoaded', function () {
                             <h5 class="fw-bold mb-3" style="color: var(--text-main);">${data.title}</h5>
                             <p class="text-muted small mb-4" style="line-height: 1.6;">${data.content}</p>
                             <div class="d-flex justify-content-between align-items-center border-top pt-3" style="border-color: rgba(0,0,0,0.05) !important;">
-                                <small class="text-muted"><i class="far fa-clock me-1"></i> ${data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'กำลังโหลด...'}</small>
+                                <small class="text-muted"><i class="far fa-calendar-alt me-1"></i> ${data.newsDate || (data.createdAt ? new Date(data.createdAt.toDate()).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'กำลังโหลด...')}</small>
                                 ${isAdmin ? `
                                 <div class="btn-group btn-group-sm">
                                     <button class="btn btn-link text-warning p-0 me-2 text-decoration-none" onclick="openEditNews('${data.id}')"><i class="fas fa-edit me-1"></i>แก้ไข</button>
@@ -764,6 +764,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const data = {
             title: document.getElementById('newsTitle').value,
             category: document.getElementById('newsCategory').value,
+            newsDate: document.getElementById('newsDate').value,
             content: document.getElementById('newsContent').value,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
@@ -944,6 +945,7 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('newsId').value = id;
             document.getElementById('newsTitle').value = data.title;
             document.getElementById('newsCategory').value = data.category;
+            document.getElementById('newsDate').value = data.newsDate || '';
             document.getElementById('newsContent').value = data.content;
             new bootstrap.Modal(document.getElementById('addNewsModal')).show();
         });
