@@ -259,10 +259,12 @@ document.addEventListener('DOMContentLoaded', function () {
         fetchProjects();
         fetchCertificates();
         fetchNews();
+        fetchArticles();
         fetchGpax();
         fetchSkills();
         fetchMessages();
         fetchGenericContent();
+        updateVisitorCount();
     };
 
     renderAll();
@@ -752,6 +754,84 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
+    function fetchArticles() {
+        const container = document.getElementById('articles-container');
+        if (!container) return;
+
+        if (!db) {
+            container.innerHTML = '<div class="col-12 text-center text-muted py-5">ยังไม่ได้เชื่อมต่อฐานข้อมูลบทความ</div>';
+            return;
+        }
+
+        db.collection('articles').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
+            container.innerHTML = '';
+            const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
+
+            if (snapshot.empty) {
+                container.innerHTML = '<div class="col-12 text-center text-muted py-5">ยังไม่มีบทความถูกเพิ่ม</div>';
+                return;
+            }
+
+            snapshot.forEach(doc => {
+                const data = doc.data();
+                const col = document.createElement('div');
+                col.className = 'col-lg-4 col-md-6 article-item';
+                col.setAttribute('data-aos', 'fade-up');
+
+                const dateText = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) : 'ไม่ระบุวันที่';
+
+                col.innerHTML = `
+                    <div class="card h-100 border-0 shadow-sm rounded-4 overflow-hidden position-relative" style="background-color: var(--card-bg) !important;">
+                        ${isAdmin ? `<div class="position-absolute top-0 end-0 p-3 mt-n3 d-flex gap-1" style="z-index: 10;">
+                                <button class="btn btn-warning btn-sm rounded-circle shadow-sm" onclick="openEditArticle('${doc.id}')" title="แก้ไข"><i class="fas fa-edit"></i></button>
+                                <button class="btn btn-danger btn-sm rounded-circle shadow-sm" onclick="deleteItem('articles', '${doc.id}')" title="ลบ"><i class="fas fa-trash"></i></button>
+                            </div>` : ''}
+                        ${data.image ? `<img src="${data.image}" alt="${data.title}" class="card-img-top" style="height: 200px; object-fit: cover;">` : `<div style="height: 200px; background: var(--primary-color); display: flex; align-items:center; justify-content:center; color: white;"><i class="fas fa-file-alt display-1 opacity-50"></i></div>`}
+                        <div class="card-body p-4 d-flex flex-column">
+                            <h5 class="fw-bold mb-3" style="color: var(--text-main);">${data.title}</h5>
+                            <p class="text-muted small mb-4" style="display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">${data.content}</p>
+                            <div class="d-flex justify-content-between align-items-center mt-auto">
+                                <span class="small text-muted"><i class="far fa-calendar-alt me-1"></i> ${dateText}</span>
+                                <button class="btn btn-link text-primary p-0 fw-bold text-decoration-none shadow-none" onclick="viewArticleDetail('${doc.id}')">อ่านต่อ <i class="fas fa-arrow-right ms-1"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(col);
+            });
+        });
+    }
+
+
+
+    function updateVisitorCount() {
+        if (!db) return;
+
+        const countDisplays = document.querySelectorAll('#visitorCount');
+        if (countDisplays.length === 0) return;
+
+        const statsRef = db.collection('settings').doc('visitor_stats');
+
+        // Use localStorage instead of session so it really acts like unique visitors (very basic way)
+        if (!localStorage.getItem('visited_portfolio')) {
+            localStorage.setItem('visited_portfolio', 'true');
+            statsRef.set({
+                total: firebase.firestore.FieldValue.increment(1)
+            }, { merge: true });
+        }
+
+        // Listen to live updates
+        statsRef.onSnapshot(doc => {
+            if (doc.exists && doc.data().total !== undefined) {
+                countDisplays.forEach(display => {
+                    display.innerText = doc.data().total.toLocaleString();
+                });
+            }
+        });
+    }
+
+
+
     // --- Admin Add Data ---
 
     document.getElementById('newsForm')?.addEventListener('submit', function (e) {
@@ -980,6 +1060,99 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
+    document.getElementById('articleForm')?.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!db) return;
+
+        const id = document.getElementById('articleId').value;
+        const data = {
+            title: document.getElementById('articleTitle').value,
+            image: document.getElementById('articleImage').value,
+            content: document.getElementById('articleContent').value,
+            updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+        };
+
+        const ref = db.collection('articles');
+
+        Swal.fire({
+            title: 'ยืนยันบันทึกบทความ?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonColor: '#1e5622',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'บันทึก',
+            cancelButtonText: 'ยกเลิก',
+            reverseButtons: true,
+            customClass: { popup: 'rounded-4' }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                if (id) {
+                    ref.doc(id).update(data).then(() => {
+                        finalizeModal(this, 'addArticleModal', 'แก้ไขบทความสำเร็จ');
+                    });
+                } else {
+                    ref.add({
+                        ...data,
+                        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+                    }).then(() => {
+                        finalizeModal(this, 'addArticleModal', 'เพิ่มบทความสำเร็จ');
+                    });
+                }
+            }
+        });
+    });
+
+
+
+    function finalizeModal(form, modalId, msg) {
+        bootstrap.Modal.getInstance(document.getElementById(modalId)).hide();
+        form.reset();
+        const hiddenId = form.querySelector('input[type="hidden"]');
+        if (hiddenId) hiddenId.value = '';
+        Swal.fire({
+            title: msg,
+            icon: 'success',
+            confirmButtonColor: '#1e5622',
+            customClass: { title: 'text-success fw-bold', popup: 'rounded-4' }
+        });
+    }
+
+    window.openEditArticle = (id) => {
+        db.collection('articles').doc(id).get().then(doc => {
+            const data = doc.data();
+            document.getElementById('articleId').value = id;
+            document.getElementById('articleTitle').value = data.title;
+            document.getElementById('articleImage').value = data.image || '';
+            document.getElementById('articleContent').value = data.content;
+            new bootstrap.Modal(document.getElementById('addArticleModal')).show();
+        });
+    };
+
+
+
+    window.viewArticleDetail = (id) => {
+        if (!db) return;
+        db.collection('articles').doc(id).get().then(doc => {
+            if (doc.exists) {
+                const data = doc.data();
+                const content = document.getElementById('article-detail-content');
+                const dateText = data.createdAt ? new Date(data.createdAt.toMillis()).toLocaleDateString('th-TH', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
+
+                if (content) {
+                    content.innerHTML = `
+                        <div class="mb-4">
+                            ${data.image ? `<img src="${data.image}" class="img-fluid rounded-4 shadow-sm w-100 mb-4" alt="${data.title}" style="max-height: 400px; object-fit: cover;">` : ''}
+                            <h2 class="fw-bold mb-3">${data.title}</h2>
+                            <p class="text-muted small mb-4 border-bottom pb-3"><i class="far fa-calendar-alt me-2"></i>เผยแพร่เมื่อ ${dateText}</p>
+                            <div class="fs-5" style="line-height: 1.8; white-space: pre-wrap; color: var(--text-main);">${data.content}</div>
+                        </div>
+                    `;
+                    new bootstrap.Modal(document.getElementById('viewArticleModal')).show();
+                }
+            }
+        });
+    };
+
     window.openEditSkill = (id, type) => {
         db.collection('skills').doc(id).get().then(doc => {
             const data = doc.data();
@@ -1138,7 +1311,8 @@ document.addEventListener('DOMContentLoaded', function () {
         const s4 = parseFloat(document.getElementById('sem4').value) || 0;
         const s5 = parseFloat(document.getElementById('sem5').value) || 0;
 
-        const average = (s1 + s2 + s3 + s4 + s5) / 5;
+        const validGrades = [s1, s2, s3, s4, s5].filter(v => v > 0);
+        const average = validGrades.length > 0 ? validGrades.reduce((a, b) => a + b, 0) / validGrades.length : 0;
 
         Swal.fire({
             title: 'ยืนยันบันทึกผลการเรียน?',
@@ -1173,9 +1347,12 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelectorAll('.sem-input').forEach(input => {
         input.addEventListener('input', () => {
             const inputs = document.querySelectorAll('.sem-input');
-            let total = 0;
-            inputs.forEach(i => total += parseFloat(i.value) || 0);
-            const avg = total / 5;
+            let validGrades = [];
+            inputs.forEach(i => {
+                const val = parseFloat(i.value) || 0;
+                if (val > 0) validGrades.push(val);
+            });
+            const avg = validGrades.length > 0 ? validGrades.reduce((a, b) => a + b, 0) / validGrades.length : 0;
             const display = document.getElementById('calculatedGpax');
             if (display) display.innerText = avg.toFixed(2);
         });
@@ -1193,7 +1370,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 document.getElementById('sem4').value = s.s4 || '';
                 document.getElementById('sem5').value = s.s5 || '';
 
-                const avg = (parseFloat(s.s1 || 0) + parseFloat(s.s2 || 0) + parseFloat(s.s3 || 0) + parseFloat(s.s4 || 0) + parseFloat(s.s5 || 0)) / 5;
+                const validGrades = [parseFloat(s.s1 || 0), parseFloat(s.s2 || 0), parseFloat(s.s3 || 0), parseFloat(s.s4 || 0), parseFloat(s.s5 || 0)].filter(v => v > 0);
+                const avg = validGrades.length > 0 ? validGrades.reduce((a, b) => a + b, 0) / validGrades.length : 0;
                 document.getElementById('calculatedGpax').innerText = avg.toFixed(2);
             }
         });
