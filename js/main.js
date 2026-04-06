@@ -10,6 +10,48 @@ document.addEventListener('DOMContentLoaded', function () {
         measurementId: "G-0XCEELDJPL"
     };
 
+    // --- Utility Functions ---
+    const getDirectDriveLink = (url) => {
+        if (!url || typeof url !== 'string') return url;
+        const driveMatch = url.match(/(?:\/d\/|id=)([\w-]+)/);
+        if (url.includes('drive.google.com') && driveMatch) {
+            return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+        }
+        return url;
+    };
+
+    window.toggleDriveHelper = (targetId) => {
+        const helper = document.getElementById(`helper_${targetId}`);
+        if (helper) {
+            helper.classList.toggle('d-none');
+            if (!helper.classList.contains('d-none')) {
+                document.getElementById(`input_${targetId}`).focus();
+            }
+        }
+    };
+
+    window.applyDriveLink = (targetId) => {
+        const input = document.getElementById(`input_${targetId}`);
+        const mainInput = document.getElementById(targetId);
+        if (input && mainInput) {
+            const rawValue = input.value.trim();
+            if (rawValue) {
+                const directLink = getDirectDriveLink(rawValue);
+                mainInput.value = directLink;
+                document.getElementById(`helper_${targetId}`).classList.add('d-none');
+                input.value = '';
+                Swal.fire({
+                    toast: true,
+                    position: 'top-end',
+                    icon: 'success',
+                    title: 'แปลงลิงก์สำเร็จ',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+        }
+    };
+
     // Theme Logic - Run immediately for best UX
     const initTheme = () => {
         const savedTheme = localStorage.getItem('theme') || 'light';
@@ -312,39 +354,39 @@ document.addEventListener('DOMContentLoaded', function () {
                 col.dataset.id = data.id;
 
                 col.innerHTML = `
-                    <div class="project-card shadow-lg h-100 position-relative">
-                        ${isAdmin ? `<div class="drag-handle position-absolute top-0 start-0 p-2 text-white-50" style="z-index: 11; cursor: grab;"><i class="fas fa-grip-vertical"></i></div>` : ''}
-                        <div class="project-img-container position-relative">
-                            <img src="${data.image}" alt="${data.title}" class="img-fluid" style="height: 250px; width: 100%; object-fit: cover;">
-                            <div class="project-overlay">
-                                <h4 class="fw-bold text-white mb-3">${data.title}</h4>
-                                <p class="small text-white-50 mb-4">${data.description ? data.description.substring(0, 80) : ''}...</p>
-                                <div class="d-flex gap-2">
-                                    <button class="btn btn-light rounded-pill px-3 btn-sm fw-bold" onclick="viewProjectDetail('${data.id}')">รายละเอียด</button>
-                                    ${data.link ? `<a href="${data.link}" target="_blank" class="btn btn-outline-light rounded-pill px-3 btn-sm fw-bold"><i class="fas fa-external-link-alt"></i></a>` : ''}
-                                </div>
+                    <div class="project-card shadow-sm h-100 position-relative border-0 rounded-4 overflow-hidden bg-white" style="transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                        ${isAdmin ? `<div class="drag-handle position-absolute top-0 start-0 p-2 text-dark opacity-25" style="z-index: 11; cursor: grab;"><i class="fas fa-grip-vertical"></i></div>` : ''}
+                        <div class="project-img-container position-relative overflow-hidden">
+                            <img src="${data.image}" alt="${data.title}" class="img-fluid" style="height: 240px; width: 100%; object-fit: cover; transition: transform 0.5s ease;">
+                            <div class="project-overlay d-flex flex-column justify-content-center align-items-center">
+                                <button class="btn btn-light rounded-pill px-4 fw-bold shadow-sm" onclick="viewProjectDetail('${data.id}')">
+                                    <i class="fas fa-search-plus me-2"></i>ดูรายละเอียด
+                                </button>
+                                ${data.link ? `<a href="${data.link}" target="_blank" class="btn btn-outline-light rounded-pill px-3 mt-2 btn-sm border-2 fw-bold"><i class="fas fa-external-link-alt me-1"></i>ดูเว็บไซต์</a>` : ''}
                             </div>
                         </div>
-                        <div class="p-4 bg-white position-relative">
-                            ${isAdmin ? `
-                            <div class="position-absolute top-0 end-0 p-3 d-flex gap-1" style="z-index: 10;">
-                                <button class="btn btn-warning btn-sm rounded-circle shadow-sm" onclick="openEditProject('${data.id}')" title="แก้ไข"><i class="fas fa-edit"></i></button>
-                                <button class="btn btn-danger btn-sm rounded-circle shadow-sm" onclick="deleteItem('projects', '${data.id}')" title="ลบ"><i class="fas fa-trash"></i></button>
+                        <div class="p-4">
+                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                <h5 class="fw-bold mb-0 text-dark" style="line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">${data.title}</h5>
+                                ${isAdmin ? `
+                                <div class="d-flex gap-1 ms-2">
+                                    <button class="btn btn-warning btn-sm rounded-circle shadow-sm" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="openEditProject('${data.id}')" title="แก้ไข"><i class="fas fa-edit" style="font-size: 0.75rem;"></i></button>
+                                    <button class="btn btn-danger btn-sm rounded-circle shadow-sm" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;" onclick="deleteItem('projects', '${data.id}')" title="ลบ"><i class="fas fa-trash" style="font-size: 0.75rem;"></i></button>
+                                </div>
+                                ` : ''}
                             </div>
-                            ` : ''}
-                            <h5 class="fw-bold mb-2">${data.title}</h5>
-                            <span class="badge bg-soft-primary text-primary mb-3 px-3 py-2 rounded-pill category-badge" 
-                                  style="cursor: pointer; position: relative; z-index: 10;" 
-                                  onclick="event.stopPropagation(); filterByCategory('${data.category}')" 
-                                  title="ดูผลงานหมวดนี้">
-                                ${data.category === 'academic' ? 'ด้านวิชาการ' :
-                        data.category === 'innovation' ? 'ทักษะ & นวัตกรรม' :
-                            data.category === 'volunteer' ? 'ด้านจิตอาสา' :
-                                data.category === 'leadership' ? 'ด้านความเป็นผู้นำ' :
-                                    data.category === 'others' ? 'ด้านอื่น ๆ' : data.category}
-                            </span>
-                            <div class="mb-2">
-                                <p class="text-muted small mb-0"><i class="far fa-calendar-alt me-2 text-primary"></i>${data.date || 'ไม่ระบุวันที่'}</p>
+                            <div class="d-flex flex-wrap gap-2 mb-3">
+                                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-medium" style="font-size: 0.75rem; letter-spacing: 0.5px;">
+                                    ${data.category === 'academic' ? '📚 ด้านวิชาการ' :
+                        data.category === 'innovation' ? '💡 ทักษะ & นวัตกรรม' :
+                            data.category === 'volunteer' ? '🤝 ด้านจิตอาสา' :
+                                data.category === 'leadership' ? '👑 ด้านความเป็นผู้นำ' :
+                                    data.category === 'others' ? '✨ ด้านอื่น ๆ' : data.category}
+                                </span>
+                            </div>
+                            <div class="d-flex align-items-center text-muted small">
+                                <i class="far fa-calendar-alt me-2 text-primary"></i>
+                                <span>${data.date || 'ไม่ระบุวันที่'}</span>
                             </div>
                         </div>
                     </div>
@@ -904,7 +946,7 @@ document.addEventListener('DOMContentLoaded', function () {
             role: document.getElementById('projRole').value,
             date: document.getElementById('projDate').value,
             location: document.getElementById('projLocation').value,
-            image: document.getElementById('projImg').value,
+            image: getDirectDriveLink(document.getElementById('projImg').value),
             link: document.getElementById('projLink').value || '',
             description: document.getElementById('projDesc').value,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -968,7 +1010,7 @@ document.addEventListener('DOMContentLoaded', function () {
             name: document.getElementById('certName').value,
             organization: document.getElementById('certOrg').value,
             date: document.getElementById('certDate').value,
-            image: document.getElementById('certImg').value,
+            image: getDirectDriveLink(document.getElementById('certImg').value),
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
 
@@ -1067,7 +1109,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const id = document.getElementById('articleId').value;
         const data = {
             title: document.getElementById('articleTitle').value,
-            image: document.getElementById('articleImage').value,
+            image: getDirectDriveLink(document.getElementById('articleImage').value),
             content: document.getElementById('articleContent').value,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
         };
