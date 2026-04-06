@@ -1281,14 +1281,23 @@ body.loading {
 }
 
 /* Project Card Overlays & Interactive Effects */
+.project-card {
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.project-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.12) !important;
+}
+
 .project-img-container {
     position: relative;
     overflow: hidden;
-    border-radius: 15px 15px 0 0;
+    border-radius: 20px 20px 0 0;
 }
 
 .project-img-container img {
-    transition: transform 0.6s cubic-bezier(0.165, 0.84, 0.44, 1);
+    transition: transform 1s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .project-overlay {
@@ -1297,18 +1306,15 @@ body.loading {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(29, 78, 216, 0.85);
-    /* primary with opacity */
-    backdrop-filter: blur(8px);
+    background: linear-gradient(to bottom, rgba(37, 99, 235, 0.8), rgba(124, 58, 237, 0.8));
+    backdrop-filter: blur(5px);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     opacity: 0;
-    transition: opacity 0.4s ease;
+    transition: all 0.4s ease;
     padding: 30px;
-    text-align: center;
-    color: white;
 }
 
 .project-card:hover .project-overlay {
@@ -1316,7 +1322,7 @@ body.loading {
 }
 
 .project-card:hover .project-img-container img {
-    transform: scale(1.1) rotate(1deg);
+    transform: scale(1.1);
 }
 
 .btn-view-project {
