@@ -1398,6 +1398,13 @@ document.addEventListener('DOMContentLoaded', function () {
             const display = document.getElementById('calculatedGpax');
             if (display) display.innerText = avg.toFixed(2);
         });
+
+        // Auto format to 2 decimal places on blur
+        input.addEventListener('blur', (e) => {
+            if (e.target.value !== '') {
+                e.target.value = parseFloat(e.target.value).toFixed(2);
+            }
+        });
     });
 
     // Prefill GPAX form when modal opens
@@ -1406,11 +1413,12 @@ document.addEventListener('DOMContentLoaded', function () {
         db.collection('settings').doc('stats').get().then(doc => {
             if (doc.exists && doc.data().semesters) {
                 const s = doc.data().semesters;
-                document.getElementById('sem1').value = s.s1 || '';
-                document.getElementById('sem2').value = s.s2 || '';
-                document.getElementById('sem3').value = s.s3 || '';
-                document.getElementById('sem4').value = s.s4 || '';
-                document.getElementById('sem5').value = s.s5 || '';
+                const formatGPA = (val) => val ? parseFloat(val).toFixed(2) : '';
+                document.getElementById('sem1').value = formatGPA(s.s1);
+                document.getElementById('sem2').value = formatGPA(s.s2);
+                document.getElementById('sem3').value = formatGPA(s.s3);
+                document.getElementById('sem4').value = formatGPA(s.s4);
+                document.getElementById('sem5').value = formatGPA(s.s5);
 
                 const validGrades = [parseFloat(s.s1 || 0), parseFloat(s.s2 || 0), parseFloat(s.s3 || 0), parseFloat(s.s4 || 0), parseFloat(s.s5 || 0)].filter(v => v > 0);
                 const avg = validGrades.length > 0 ? validGrades.reduce((a, b) => a + b, 0) / validGrades.length : 0;
