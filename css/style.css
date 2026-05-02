@@ -589,6 +589,12 @@ body.loading {
     padding: 3rem !important;
 }
 
+@media (max-width: 767.98px) {
+    .sop-content {
+        padding: 2rem 1.5rem !important;
+    }
+}
+
 .sop-content::before {
     content: '"';
     position: absolute;
@@ -652,6 +658,36 @@ body.loading {
 .section-padding {
     padding: 100px 0;
     transition: background-color 0.4s ease;
+}
+
+@media (max-width: 767.98px) {
+    .section-padding {
+        padding: 60px 0;
+    }
+}
+
+/* Skills Section Responsiveness Fix */
+#skills .card-body span.small {
+    display: block;
+    white-space: nowrap !important;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: keep-all !important;
+    overflow-wrap: normal !important;
+    font-size: 0.75rem;
+    padding: 0 1px;
+}
+
+@media (min-width: 576px) {
+    #skills .card-body span.small {
+        font-size: 0.8rem;
+    }
+}
+
+@media (min-width: 1200px) {
+    #skills .card-body span.small {
+        font-size: 0.85rem;
+    }
 }
 
 #education,
@@ -2095,3 +2131,44 @@ html {
         font-size: 1.6rem;
     }
 }
+
+/* Navbar Responsiveness Fix */
+@media (max-width: 1399.98px) {
+    .navbar-nav .nav-link {
+        font-size: 0.85rem;
+        padding: 0.4rem 0.5rem !important;
+    }
+}
+
+/* Hero & Section Fixes */
+@media (max-width: 991.98px) {
+    .display-3 {
+        font-size: 3rem;
+    }
+    
+    .hero-btns {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .btn-lg {
+        width: 100%;
+        max-width: 300px;
+    }
+}
+
+/* Global Mobile Fixes */
+@media (max-width: 575.98px) {
+    .display-3 {
+        font-size: 2.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .card-body {
+        padding: 1rem !important;
+    }
+}
+
