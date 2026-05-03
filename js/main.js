@@ -11,6 +11,8 @@ document.addEventListener('DOMContentLoaded', function () {
     };
 
     // --- Utility Functions ---
+    // --- Utility Functions ---
+
     const getDirectDriveLink = (url) => {
         if (!url || typeof url !== 'string') return url;
         const driveMatch = url.match(/(?:\/d\/|id=)([\w-]+)/);
@@ -92,6 +94,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const ADMIN_CODE = "admin123"; //รหัสผ่านแอดมิน (Password)
     window.currentProjectFilter = 'all';
+    window.portfolioData = { projects: [], certificates: [], news: [], articles: [] };
 
 
 
@@ -336,6 +339,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const items = [];
             snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+            window.portfolioData.projects = items;
 
             items.sort((a, b) => {
                 const orderA = a.order !== undefined ? a.order : 999;
@@ -452,6 +456,7 @@ document.addEventListener('DOMContentLoaded', function () {
             // Get certificates and sort by 'order'
             const certs = [];
             snapshot.forEach(doc => certs.push({ id: doc.id, ...doc.data() }));
+            window.portfolioData.certificates = certs;
 
             // Sort: Order (ASC), then createdAt (DESC) fallback
             certs.sort((a, b) => {
@@ -662,6 +667,7 @@ document.addEventListener('DOMContentLoaded', function () {
             snapshot.forEach(doc => {
                 items.push({ id: doc.id, ...doc.data() });
             });
+            window.portfolioData.news = items;
 
             // Sort by order
             items.sort((a, b) => (a.order || 0) - (b.order || 0));
@@ -807,6 +813,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         db.collection('articles').orderBy('createdAt', 'desc').onSnapshot(snapshot => {
             container.innerHTML = '';
+            const items = [];
+            snapshot.forEach(doc => items.push({ id: doc.id, ...doc.data() }));
+            window.portfolioData.articles = items;
             const isAdmin = sessionStorage.getItem('isAdmin') === 'true';
 
             if (snapshot.empty) {
@@ -853,10 +862,24 @@ document.addEventListener('DOMContentLoaded', function () {
         if (countDisplays.length === 0) return;
 
         const statsRef = db.collection('settings').doc('visitor_stats');
+        
+        // Log detailed analytics for Admin
+        if (!sessionStorage.getItem('analytics_logged')) {
+            sessionStorage.setItem('analytics_logged', 'true');
+            
+            const analyticsData = {
+                timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+                page: window.location.pathname,
+                userAgent: navigator.userAgent,
+                platform: navigator.platform,
+                language: navigator.language,
+                screen: `${window.screen.width}x${window.screen.height}`,
+                referrer: document.referrer || 'Direct'
+            };
 
-        // Use localStorage instead of session so it really acts like unique visitors (very basic way)
-        if (!localStorage.getItem('visited_portfolio')) {
-            localStorage.setItem('visited_portfolio', 'true');
+            db.collection('analytics').add(analyticsData);
+            
+            // Increment total count
             statsRef.set({
                 total: firebase.firestore.FieldValue.increment(1)
             }, { merge: true });
@@ -871,6 +894,10 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    // Call init functions
+    initLanguage();
+    renderAll();
 
 
 
@@ -1804,6 +1831,253 @@ document.addEventListener('DOMContentLoaded', function () {
 
         update();
         setInterval(update, 1000);
+    }
+
+    // Accessibility Toolbar Logic
+    const accBtn = document.getElementById('accBtn');
+    const accPanel = document.getElementById('accPanel');
+    if (accBtn && accPanel) {
+        accBtn.addEventListener('click', () => {
+            accPanel.classList.toggle('active');
+        });
+
+        // Close panel when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!accBtn.contains(e.target) && !accPanel.contains(e.target)) {
+                accPanel.classList.remove('active');
+            }
+        });
+
+        // Font Size
+        const fontBtns = {
+            'acc-font-md': '',
+            'acc-font-lg': 'font-size-lg',
+            'acc-font-xl': 'font-size-xl'
+        };
+
+        Object.keys(fontBtns).forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.addEventListener('click', () => {
+                    // Remove all font classes
+                    Object.values(fontBtns).forEach(cls => {
+                        if (cls) document.documentElement.classList.remove(cls);
+                    });
+                    // Add selected class
+                    if (fontBtns[btnId]) document.documentElement.classList.add(fontBtns[btnId]);
+                    
+                    // Update active state
+                    Object.keys(fontBtns).forEach(id => {
+                        const b = document.getElementById(id);
+                        if (b) b.classList.toggle('active', id === btnId);
+                    });
+                    
+                    localStorage.setItem('acc-font-size', btnId);
+                });
+            }
+        });
+
+        // Load Saved Settings
+        const savedFont = localStorage.getItem('acc-font-size');
+        if (savedFont && document.getElementById(savedFont)) {
+            document.getElementById(savedFont).click();
+        }
+    }
+
+    // Smart Search Logic
+    const searchTrigger = document.getElementById('search-trigger');
+    const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
+    const searchInput = document.getElementById('smartSearchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    if (searchTrigger) {
+        searchTrigger.addEventListener('click', () => {
+            searchModal.show();
+            setTimeout(() => searchInput.focus(), 500);
+        });
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+            const query = e.target.value.toLowerCase().trim();
+            if (query.length < 2) {
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            const results = [];
+            
+            // Search Projects
+            window.portfolioData.projects.forEach(p => {
+                if (p.title.toLowerCase().includes(query) || p.description?.toLowerCase().includes(query)) {
+                    results.push({ type: 'project', title: p.title, id: p.id, icon: 'fas fa-rocket' });
+                }
+            });
+
+            // Search Certificates
+            window.portfolioData.certificates.forEach(c => {
+                if (c.name.toLowerCase().includes(query) || c.organization?.toLowerCase().includes(query)) {
+                    results.push({ type: 'certificate', title: c.name, id: c.id, icon: 'fas fa-certificate' });
+                }
+            });
+
+            // Search News
+            window.portfolioData.news.forEach(n => {
+                if (n.title.toLowerCase().includes(query) || n.content?.toLowerCase().includes(query)) {
+                    results.push({ type: 'news', title: n.title, id: n.id, icon: 'fas fa-newspaper' });
+                }
+            });
+
+            renderSearchResults(results);
+        });
+    }
+
+    function renderSearchResults(results) {
+        if (results.length === 0) {
+            searchResults.innerHTML = '<div class="p-4 text-center text-muted">ไม่พบผลลัพธ์ที่ตรงกับคำค้นหา</div>';
+        } else {
+            searchResults.innerHTML = results.map(r => `
+                <div class="search-result-item p-3 border-bottom d-flex align-items-center gap-3" style="cursor: pointer;" onclick="handleSearchResultClick('${r.type}', '${r.id}')">
+                    <div class="result-icon bg-light rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px;">
+                        <i class="${r.icon} text-primary"></i>
+                    </div>
+                    <div class="result-info">
+                        <div class="fw-bold text-dark">${r.title}</div>
+                        <div class="small text-muted">${getCategoryName(r.type)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        searchResults.style.display = 'block';
+    }
+
+    window.handleSearchResultClick = (type, id) => {
+        searchModal.hide();
+        if (type === 'project') window.viewProjectDetail(id);
+        else if (type === 'certificate') {
+            const el = document.getElementById('certificates');
+            if (el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
+        }
+        else if (type === 'news') {
+            const el = document.getElementById('news');
+            if (el) window.scrollTo({ top: el.offsetTop - 100, behavior: 'smooth' });
+        }
+    };
+
+    function getCategoryName(type) {
+        const names = { project: 'ผลงาน', certificate: 'เกียรติบัตร', news: 'กิจกรรม/ข่าวสาร' };
+        return names[type] || type;
+    }
+
+    // --- Analytics Dashboard Logic ---
+    let trafficChart = null;
+    let deviceChart = null;
+
+    window.openAnalytics = function() {
+        const modal = new bootstrap.Modal(document.getElementById('analyticsModal'));
+        modal.show();
+
+        if (!db) return;
+
+        // Fetch Total Views
+        db.collection('settings').doc('visitor_stats').get().then(doc => {
+            if (doc.exists) document.getElementById('analytics-total-views').innerText = doc.data().total.toLocaleString();
+        });
+
+        // Fetch Logs (Last 100)
+        db.collection('analytics').orderBy('timestamp', 'desc').limit(100).get().then(snapshot => {
+            const logs = [];
+            snapshot.forEach(doc => logs.push(doc.data()));
+            
+            document.getElementById('analytics-unique-sessions').innerText = snapshot.size;
+            renderAnalyticsUI(logs);
+        });
+    };
+
+    function renderAnalyticsUI(logs) {
+        const logsBody = document.getElementById('analytics-logs-body');
+        const platformCounts = {};
+        const deviceData = { Desktop: 0, Mobile: 0, Tablet: 0 };
+        const timeData = {};
+
+        logsBody.innerHTML = '';
+        logs.forEach(log => {
+            const date = log.timestamp ? new Date(log.timestamp.toMillis()) : new Date();
+            const timeStr = date.toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' });
+            const dateStr = date.toLocaleDateString('th-TH');
+            
+            // Stats for charts
+            const hourKey = `${date.getHours()}:00`;
+            timeData[hourKey] = (timeData[hourKey] || 0) + 1;
+
+            const platform = log.platform || 'Unknown';
+            platformCounts[platform] = (platformCounts[platform] || 0) + 1;
+
+            if (platform.includes('Win') || platform.includes('Mac') || platform.includes('Linux')) deviceData.Desktop++;
+            else if (platform.includes('iPhone') || platform.includes('Android')) deviceData.Mobile++;
+            else deviceData.Tablet++;
+
+            // Table row
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td>${dateStr} <br> <span class="text-muted">${timeStr}</span></td>
+                <td><span class="badge bg-light text-dark border">${log.page.split('/').pop() || 'index'}</span></td>
+                <td><small>${platform}</small></td>
+                <td><small>${log.screen || '-'}</small></td>
+                <td class="text-truncate" style="max-width: 150px;"><small>${log.referrer}</small></td>
+            `;
+            logsBody.appendChild(tr);
+        });
+
+        // Update Platform Pills
+        const platformList = document.getElementById('analytics-platforms-list');
+        platformList.innerHTML = Object.entries(platformCounts)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 5)
+            .map(([name, count]) => `<span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill">${name}: ${count}</span>`)
+            .join('');
+
+        // Render Charts
+        renderCharts(timeData, deviceData);
+    }
+
+    function renderCharts(timeData, deviceData) {
+        const trafficCtx = document.getElementById('trafficChart').getContext('2d');
+        const deviceCtx = document.getElementById('deviceChart').getContext('2d');
+
+        if (trafficChart) trafficChart.destroy();
+        if (deviceChart) deviceChart.destroy();
+
+        // Traffic Chart
+        const hours = Object.keys(timeData).sort((a, b) => parseInt(a) - parseInt(b));
+        trafficChart = new Chart(trafficCtx, {
+            type: 'line',
+            data: {
+                labels: hours,
+                datasets: [{
+                    label: 'Visits',
+                    data: hours.map(h => timeData[h]),
+                    borderColor: '#2563eb',
+                    backgroundColor: 'rgba(37, 99, 235, 0.1)',
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+        });
+
+        // Device Chart
+        deviceChart = new Chart(deviceCtx, {
+            type: 'doughnut',
+            data: {
+                labels: Object.keys(deviceData),
+                datasets: [{
+                    data: Object.values(deviceData),
+                    backgroundColor: ['#2563eb', '#10b981', '#f59e0b']
+                }]
+            },
+            options: { responsive: true, maintainAspectRatio: false, cutout: '70%' }
+        });
     }
 
     updateDynamicAge();
