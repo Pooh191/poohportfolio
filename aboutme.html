@@ -49,8 +49,11 @@
         <div class="container">
             <a class="navbar-brand fw-bold" href="index.html">PORTFOLIO</a>
 
-            <div class="d-flex align-items-center order-lg-last ms-2">
-                <button id="dark-mode-toggle" class="btn btn-link text-dark p-0 me-3" title="Toggle Dark Mode">
+            <div class="d-flex align-items-center order-lg-last ms-2 gap-2">
+                <button class="btn btn-link text-dark p-0 me-2" id="search-trigger" title="ค้นหา (Search)">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button id="dark-mode-toggle" class="btn btn-link text-dark p-0 me-2" title="Toggle Dark Mode">
                     <i class="fas fa-moon"></i>
                 </button>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -70,7 +73,7 @@
                     <li class="nav-item"><a class="nav-link" href="index.html#skills"><i
                                 class="fas fa-tools me-2"></i>ทักษะ</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="index.html#news"><i
+                    <li class="nav-item"><a class="nav-link" href="index.html#news" data-i18n="nav_news"><i
                                 class="fas fa-newspaper me-2"></i>ข่าวสาร</a></li>
                     <li class="nav-item"><a class="nav-link" href="index.html#experience"><i
                                 class="fas fa-briefcase me-2"></i>ผลงาน</a></li>
@@ -90,6 +93,28 @@
             </div>
         </div>
     </nav>
+    
+    <!-- Smart Search Modal -->
+    <div class="modal fade search-modal" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent">
+                <div class="modal-body p-0">
+                    <div class="search-box-wrap mx-auto" style="max-width: 700px;">
+                        <div class="input-group input-group-lg shadow-lg rounded-4 overflow-hidden bg-white mb-3">
+                            <span class="input-group-text border-0 bg-white px-4">
+                                <i class="fas fa-search text-primary"></i>
+                            </span>
+                            <input type="text" class="form-control border-0 shadow-none py-4" id="smartSearchInput" placeholder="ค้นหาผลงาน, เกียรติบัตร, ข่าวสาร...">
+                            <button type="button" class="btn-close me-3" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div id="searchResults" class="search-results-container custom-scrollbar bg-white rounded-4 shadow-lg overflow-hidden" style="max-height: 60vh; display: none;">
+                            <!-- Results will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <header class="about-hero">
@@ -567,6 +592,22 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Accessibility Toolbar -->
+    <div class="accessibility-btn" id="accBtn" title="เครื่องมือช่วยเหลือ (Accessibility)">
+        <i class="fas fa-universal-access"></i>
+    </div>
+    <div class="accessibility-panel" id="accPanel">
+        <h6 class="fw-bold mb-3 border-bottom pb-2">ช่วยเหลือผู้ใช้งาน</h6>
+        <div class="accessibility-item">
+            <label class="accessibility-label">ขนาดตัวอักษร (Text Size)</label>
+            <div class="accessibility-controls">
+                <button class="acc-control-btn active" id="acc-font-md">ปกติ</button>
+                <button class="acc-control-btn" id="acc-font-lg">ใหญ่</button>
+                <button class="acc-control-btn" id="acc-font-xl">ใหญ่มาก</button>
             </div>
         </div>
     </div>
