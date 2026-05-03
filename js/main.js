@@ -896,7 +896,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // Call init functions
-    initLanguage();
     renderAll();
 
 
