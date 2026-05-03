@@ -71,6 +71,9 @@
             <a class="navbar-brand fw-bold" href="#">PORTFOLIO</a>
 
             <div class="d-flex align-items-center order-lg-last ms-2">
+                <button class="btn btn-link text-dark p-0 me-3" id="search-trigger" title="ค้นหา (Search)">
+                    <i class="fas fa-search"></i>
+                </button>
                 <button id="dark-mode-toggle" class="btn btn-link text-dark p-0 me-3" title="Toggle Dark Mode">
                     <i class="fas fa-moon"></i>
                 </button>
@@ -81,22 +84,22 @@
 
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link active" href="#home"><i
+                    <li class="nav-item"><a class="nav-link active" href="#home" data-i18n="nav_home"><i
                                 class="fas fa-home me-2"></i>หน้าแรก</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="aboutme.html"><i
+                    <li class="nav-item"><a class="nav-link" href="aboutme.html" data-i18n="nav_about"><i
                                 class="fas fa-user me-2"></i>ข้อมูลส่วนตัว</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#education"><i
+                    <li class="nav-item"><a class="nav-link" href="#education" data-i18n="nav_edu"><i
                                 class="fas fa-graduation-cap me-2"></i>การศึกษา</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#skills"><i class="fas fa-tools me-2"></i>ทักษะ</a>
+                    <li class="nav-item"><a class="nav-link" href="#skills" data-i18n="nav_skills"><i class="fas fa-tools me-2"></i>ทักษะ</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="#news"><i
+                    <li class="nav-item"><a class="nav-link" href="#news" data-i18n="nav_news"><i
                                 class="fas fa-newspaper me-2"></i>ข่าวสาร</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#experience"><i
+                    <li class="nav-item"><a class="nav-link" href="#experience" data-i18n="nav_projects"><i
                                 class="fas fa-briefcase me-2"></i>ผลงาน</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#certificates"><i
+                    <li class="nav-item"><a class="nav-link" href="#certificates" data-i18n="nav_certs"><i
                                 class="fas fa-award me-2"></i>เกียรติบัตร</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact"><i
+                    <li class="nav-item"><a class="nav-link" href="#contact" data-i18n="nav_contact"><i
                                 class="fas fa-paper-plane me-2"></i>ติดต่อ</a></li>
                     <li class="nav-item admin-only d-none"><a class="nav-link text-primary fw-bold" href="#"
                             data-bs-toggle="modal" data-bs-target="#viewMessagesModal"><i
@@ -110,27 +113,49 @@
             </div>
         </div>
     </nav>
+    
+    <!-- Smart Search Modal -->
+    <div class="modal fade search-modal" id="searchModal" tabindex="-1">
+        <div class="modal-dialog modal-fullscreen-sm-down modal-lg modal-dialog-centered">
+            <div class="modal-content border-0 bg-transparent">
+                <div class="modal-body p-0">
+                    <div class="search-box-wrap mx-auto" style="max-width: 700px;">
+                        <div class="input-group input-group-lg shadow-lg rounded-4 overflow-hidden bg-white mb-3">
+                            <span class="input-group-text border-0 bg-white px-4">
+                                <i class="fas fa-search text-primary"></i>
+                            </span>
+                            <input type="text" class="form-control border-0 shadow-none py-4" id="smartSearchInput" placeholder="ค้นหาผลงาน, เกียรติบัตร, ข่าวสาร...">
+                            <button type="button" class="btn-close me-3" data-bs-dismiss="modal"></button>
+                        </div>
+                        <div id="searchResults" class="search-results-container custom-scrollbar bg-white rounded-4 shadow-lg overflow-hidden" style="max-height: 60vh; display: none;">
+                            <!-- Results will appear here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Section 1: Personal Info (Hero) -->
     <header id="home" class="hero-section d-flex align-items-center">
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-6" data-aos="fade-right">
-                    <h5 class="text-primary fw-bold mb-3 text-uppercase tracking-widest" data-aos="fade-up">Portfolio
-                        for University</h5>
+                    <h5 class="text-primary fw-bold mb-3 text-uppercase tracking-widest" data-aos="fade-up">Portfolio for University</h5>
+                    <h2 class="display-4 fw-bold mb-3" data-i18n="about_title">เกี่ยวกับผม</h2>
                     <h1 class="display-3 fw-bold mb-2" data-aos="fade-up" data-aos-delay="100"><span
-                            class="text-gradient">แฟ้มสะสมผลงาน</span></h1>
+                            class="text-gradient" data-i18n="hero_subtitle">แฟ้มสะสมผลงาน</span></h1>
                     <h2 class="h2 mb-4" data-aos="fade-up" data-aos-delay="200">นายธนากร แซ่จอง | <span
                             id="typing-text"></span></h2>
-                    <p class="lead mb-5 text-secondary" data-aos="fade-up" data-aos-delay="300">
+                    <p class="lead mb-5 text-secondary" data-aos="fade-up" data-aos-delay="300" data-i18n="hero_desc">
                         "มุ่งมั่นพัฒนาทักษะเพื่อการเป็นครูคอมพิวเตอร์ที่มีคุณภาพ
                         สู่การเป็นนักการเมืองเพื่อการศึกษาในอนาคต"</p>
                     <div class="d-flex flex-wrap gap-3 hero-btns" data-aos="fade-up" data-aos-delay="400">
                         <a href="#experience"
-                            class="btn btn-primary-gradient btn-lg px-4 py-3 rounded-pill shadow-lg"><i
+                            class="btn btn-primary-gradient btn-lg px-4 py-3 rounded-pill shadow-lg" data-i18n="btn_view_projects"><i
                                 class="fas fa-briefcase me-2"></i> ดูผลงาน
                             (Project)</a>
-                        <a href="aboutme.html" class="btn btn-outline-custom btn-lg px-4 py-3 rounded-pill"><i
+                        <a href="aboutme.html" class="btn btn-outline-custom btn-lg px-4 py-3 rounded-pill" data-i18n="btn_about_me"><i
                                 class="fas fa-user me-2"></i> ข้อมูลส่วนตัว</a>
                     </div>
                 </div>
@@ -1209,10 +1234,9 @@
             <div class="row g-5 align-items-center">
                 <div class="col-lg-5" data-aos="fade-right">
                     <div class="mb-5">
-                        <span class="text-primary fw-bold text-uppercase letter-spacing-2 mb-2 d-block">Get In
-                            Touch</span>
-                        <h2 class="fw-bold mb-4">ช่องทางการติดต่อ</h2>
-                        <p class="opacity-75 fs-5">สนใจร่วมงานหรือต้องการสอบถามข้อมูลเพิ่มเติม
+                        <span class="text-primary fw-bold text-uppercase letter-spacing-2 mb-2 d-block">Contact Me</span>
+                        <h2 class="fw-bold mb-4" data-i18n="contact_title">ช่องทางการติดต่อ</h2>
+                        <p class="opacity-75 fs-5" data-i18n="contact_subtitle">สนใจร่วมงานหรือต้องการสอบถามข้อมูลเพิ่มเติม
                             สามารถติดต่อได้ผ่านช่องทางด้านล่างนี้ครับ</p>
                     </div>
 
@@ -1289,9 +1313,12 @@
                 <div class="mb-4 d-inline-block bg-white bg-opacity-10 rounded-pill px-4 py-2 border border-light border-opacity-25 shadow-sm"
                     data-aos="fade-up">
                     <i class="fas fa-eye text-primary me-2"></i>
-                    <span class="text-white opacity-75">ผู้เข้าชมเว็บไซต์ทั้งหมด: </span>
+                    <span class="text-white opacity-75" data-i18n="footer_visitor">ผู้เข้าชมเว็บไซต์ทั้งหมด: </span>
                     <span id="visitorCount" class="fw-bold text-white fs-5 ms-1">0</span>
-                    <span class="text-white opacity-75 ms-1">ครั้ง</span>
+                    <span class="text-white opacity-75 ms-1" data-i18n="footer_times">ครั้ง</span>
+                    <button class="btn btn-sm btn-info rounded-pill ms-3 admin-only d-none" onclick="window.openAnalytics()">
+                        <i class="fas fa-chart-line me-1"></i> ดูสถิติ
+                    </button>
                 </div>
                 <p class="mb-2 opacity-50 small">&copy; 2024 - <span id="year"></span> Thanakorn Sae-jong Portfolio. All
                     Rights Reserved.</p>
@@ -1306,6 +1333,92 @@
         </div>
     </footer>
 
+    <!-- Accessibility Toolbar -->
+    <div class="accessibility-btn" id="accBtn" title="เครื่องมือช่วยเหลือ (Accessibility)">
+        <i class="fas fa-universal-access"></i>
+    </div>
+    <div class="accessibility-panel" id="accPanel">
+        <h6 class="fw-bold mb-3 border-bottom pb-2">ช่วยเหลือผู้ใช้งาน</h6>
+        <div class="accessibility-item">
+            <label class="accessibility-label">ขนาดตัวอักษร (Text Size)</label>
+            <div class="accessibility-controls">
+                <button class="acc-control-btn active" id="acc-font-md">ปกติ</button>
+                <button class="acc-control-btn" id="acc-font-lg">ใหญ่</button>
+                <button class="acc-control-btn" id="acc-font-xl">ใหญ่มาก</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Analytics Dashboard Modal -->
+    <div class="modal fade" id="analyticsModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-scrollable">
+            <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden">
+                <div class="modal-header bg-dark text-white border-0 p-4">
+                    <h5 class="modal-title fw-bold"><i class="fas fa-chart-line me-2 text-info"></i>ระบบวิเคราะห์ข้อมูลผู้เข้าชม</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4 bg-light">
+                    <div class="row g-4">
+                        <!-- Summary Cards -->
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
+                                <div class="text-muted small fw-bold mb-1">ยอดผู้เข้าชมทั้งหมด</div>
+                                <div class="h3 fw-bold mb-0 text-primary" id="analytics-total-views">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
+                                <div class="text-muted small fw-bold mb-1">เซสชันที่ไม่ซ้ำกัน</div>
+                                <div class="h3 fw-bold mb-0 text-success" id="analytics-unique-sessions">0</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card border-0 shadow-sm rounded-4 h-100 p-3 bg-white">
+                                <div class="text-muted small fw-bold mb-1">แพลตฟอร์มยอดนิยม</div>
+                                <div class="small d-flex flex-wrap gap-2" id="analytics-platforms-list">Loading...</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Charts -->
+                        <div class="col-lg-8">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h6 class="fw-bold mb-4">ปริมาณการเข้าชม (100 รายการล่าสุด)</h6>
+                                <div style="height: 300px;"><canvas id="trafficChart"></canvas></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h6 class="fw-bold mb-4">อุปกรณ์และเบราว์เซอร์</h6>
+                                <div style="height: 300px;"><canvas id="deviceChart"></canvas></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Recent Activity -->
+                        <div class="col-12">
+                            <div class="card border-0 shadow-sm rounded-4 p-4 bg-white">
+                                <h6 class="fw-bold mb-3">ประวัติการเข้าชมล่าสุด</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-hover align-middle mb-0">
+                                        <thead class="table-light">
+                                            <tr>
+                                                <th class="small">เวลา</th>
+                                                <th class="small">หน้า</th>
+                                                <th class="small">ระบบ</th>
+                                                <th class="small">ความละเอียด</th>
+                                                <th class="small">แหล่งที่มา</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="analytics-logs-body" class="small"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Back to Top -->
     <button id="back-to-top" class="btn btn-primary rounded-circle shadow">
         <i class="fas fa-arrow-up"></i>
@@ -1316,6 +1429,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/main.js"></script>
 </body>
 
