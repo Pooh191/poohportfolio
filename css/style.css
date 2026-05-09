@@ -2336,3 +2336,79 @@ html {
     }
 }
 
+/* Project Carousel & Gallery Styles */
+#projectCarousel {
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+#projectCarousel .carousel-inner img {
+    transition: transform 0.5s ease;
+}
+
+#projectCarousel:hover .carousel-inner img {
+    transform: scale(1.05);
+}
+
+.carousel-indicators [data-bs-target] {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.5;
+    transition: all 0.3s ease;
+}
+
+.carousel-indicators .active {
+    width: 30px;
+    border-radius: 10px;
+    opacity: 1;
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+    width: 10%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+#projectCarousel:hover .carousel-control-prev,
+#projectCarousel:hover .carousel-control-next {
+    opacity: 1;
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(var(--primary-rgb), 0.8);
+    border-radius: 50%;
+    background-size: 50%;
+    width: 40px;
+    height: 40px;
+}
+
+/* Additional Image Fields in Modal */
+.additional-image-row {
+    animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.additional-image-row .input-group {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.additional-image-row .form-control {
+    border-color: rgba(var(--primary-rgb), 0.1);
+}
+
+.additional-image-row .form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: none;
+}
+
+
