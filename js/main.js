@@ -965,6 +965,10 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
         const id = document.getElementById('projId').value;
+        const additionalImgs = Array.from(document.querySelectorAll('.proj-additional-img'))
+            .map(input => getDirectDriveLink(input.value))
+            .filter(url => url.trim() !== '');
+
         const data = {
             type: document.getElementById('projType').value,
             title: document.getElementById('projTitle').value,
@@ -973,6 +977,7 @@ document.addEventListener('DOMContentLoaded', function () {
             date: document.getElementById('projDate').value,
             location: document.getElementById('projLocation').value,
             image: getDirectDriveLink(document.getElementById('projImg').value),
+            images: additionalImgs,
             link: document.getElementById('projLink').value || '',
             description: document.getElementById('projDesc').value,
             updatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -1016,6 +1021,8 @@ document.addEventListener('DOMContentLoaded', function () {
             bootstrap.Modal.getInstance(document.getElementById('addProjectModal')).hide();
             document.getElementById('projectForm').reset();
             document.getElementById('projId').value = '';
+            const container = document.getElementById('additional-images-container');
+            if (container) container.innerHTML = '';
             Swal.fire({
                 title: isEdit ? 'แก้ไขข้อมูลสำเร็จ' : 'เพิ่มข้อมูลสำเร็จ',
                 icon: 'success',
@@ -1099,6 +1106,40 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     };
 
+    window.addMoreImageField = (url = '') => {
+        const container = document.getElementById('additional-images-container');
+        if (!container) return;
+
+        const id = 'img_' + Date.now() + Math.floor(Math.random() * 1000);
+        const div = document.createElement('div');
+        div.className = 'mb-3 additional-image-row';
+        div.innerHTML = `
+            <div class="input-group">
+                <input type="url" class="form-control proj-additional-img" id="${id}" value="${url}" placeholder="https://...">
+                <button class="btn btn-outline-primary px-3" type="button" onclick="toggleDriveHelper('${id}')" title="ดึงรูปจาก Google Drive">
+                    <i class="fab fa-google-drive"></i>
+                </button>
+                <button class="btn btn-outline-danger px-3" type="button" onclick="this.closest('.additional-image-row').remove()" title="ลบรูปภาพ">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="helper_${id}" class="mt-3 p-3 rounded-4 border-0 shadow-lg d-none" style="background: rgba(var(--primary-rgb), 0.05); backdrop-filter: blur(10px);">
+                <div class="d-flex align-items-center mb-2">
+                    <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width: 24px; height: 24px; font-size: 0.7rem;">
+                        <i class="fab fa-google-drive"></i>
+                    </div>
+                    <p class="small fw-bold mb-0 text-primary">ตัวช่วยดึงรูปจาก Google Drive</p>
+                </div>
+                <p style="font-size: 0.75rem;" class="mb-3 opacity-75 text-dark">วางลิงก์แชร์จาก Drive แล้วระบบจะแปลงให้ทันที</p>
+                <div class="input-group input-group-sm">
+                    <input type="text" class="form-control border-0 shadow-none px-3" id="input_${id}" placeholder="https://drive.google.com/..." style="background: rgba(255,255,255,0.8); border-radius: 12px 0 0 12px !important;">
+                    <button class="btn btn-primary px-3 fw-bold" type="button" onclick="applyDriveLink('${id}')" style="border-radius: 0 12px 12px 0 !important;">แปลงลิงก์</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(div);
+    };
+
     window.openEditProject = (id) => {
         db.collection('projects').doc(id).get().then(doc => {
             const data = doc.data();
@@ -1112,6 +1153,16 @@ document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('projImg').value = data.image;
             document.getElementById('projLink').value = data.link || '';
             document.getElementById('projDesc').value = data.description;
+
+            // Load additional images
+            const container = document.getElementById('additional-images-container');
+            if (container) {
+                container.innerHTML = '';
+                if (data.images && Array.isArray(data.images)) {
+                    data.images.forEach(img => window.addMoreImageField(img));
+                }
+            }
+
             new bootstrap.Modal(document.getElementById('addProjectModal')).show();
         });
     };
@@ -1252,12 +1303,44 @@ document.addEventListener('DOMContentLoaded', function () {
                 const displayCategory = categoryNames[data.category] || data.category;
 
                 if (content) {
+                    const allImages = [data.image];
+                    if (data.images && Array.isArray(data.images)) {
+                        data.images.forEach(img => {
+                            if (img && img !== data.image) allImages.push(img);
+                        });
+                    }
+
+                    let mediaHtml = '';
+                    if (allImages.length > 1) {
+                        const indicators = allImages.map((_, i) => `<button type="button" data-bs-target="#projectCarousel" data-bs-slide-to="${i}" class="${i === 0 ? 'active' : ''}"></button>`).join('');
+                        const items = allImages.map((img, i) => `
+                            <div class="carousel-item ${i === 0 ? 'active' : ''}">
+                                <img src="${img}" class="d-block w-100 rounded-4" style="height: 400px; object-fit: cover;" alt="Project Image ${i + 1}">
+                            </div>
+                        `).join('');
+
+                        mediaHtml = `
+                            <div id="projectCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+                                <div class="carousel-indicators">${indicators}</div>
+                                <div class="carousel-inner shadow-sm rounded-4">${items}</div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#projectCarousel" data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#projectCarousel" data-bs-slide="next">
+                                    <span class="carousel-control-next-icon"></span>
+                                </button>
+                            </div>
+                        `;
+                    } else {
+                        mediaHtml = `<img src="${data.image}" class="img-fluid rounded-4 shadow-sm mb-4" alt="${data.title}">`;
+                    }
+
                     content.innerHTML = `
                         <div class="row">
-                            <div class="col-md-6 mb-4 mb-md-0">
-                                <img src="${data.image}" class="img-fluid rounded-4 shadow-sm" alt="${data.title}">
+                            <div class="col-lg-7">
+                                ${mediaHtml}
                             </div>
-                            <div class="col-md-6">
+                            <div class="col-lg-5">
                                 <span class="badge bg-soft-primary text-primary mb-3 px-3 py-2 rounded-pill">${displayCategory}</span>
                                 <h3 class="fw-bold mb-3">${data.title}</h3>
                                 ${data.role ? `
@@ -1276,11 +1359,11 @@ document.addEventListener('DOMContentLoaded', function () {
                                         <p class="text-muted small">${data.location}</p>
                                     </div>` : ''}
                                 </div>
-                                <div>
-                                    <h6 class="fw-bold text-primary mb-1"><i class="fas fa-info-circle me-2"></i>รายละเอียดเพิ่มเติม</h6>
-                                    <p class="text-muted small mb-3" style="white-space: pre-wrap;">${data.description}</p>
+                                <div class="mt-3">
+                                    <h6 class="fw-bold text-primary mb-2"><i class="fas fa-info-circle me-2"></i>รายละเอียดเพิ่มเติม</h6>
+                                    <div class="text-muted small mb-4 p-3 rounded-3 bg-light" style="white-space: pre-wrap; border-left: 4px solid var(--primary-color);">${data.description}</div>
                                     ${data.link ? `
-                                        <a href="${data.link}" target="_blank" class="btn btn-primary-gradient rounded-pill px-4 btn-sm fw-bold w-100">
+                                        <a href="${data.link}" target="_blank" class="btn btn-primary-gradient rounded-pill px-4 fw-bold w-100 py-2">
                                             <i class="fas fa-external-link-alt me-2"></i>เข้าชมเว็บไซต์ / ลิงก์ผลงาน
                                         </a>
                                     ` : ''}
