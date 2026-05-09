@@ -62,28 +62,6 @@ Pooh-Portfolio/
 
 ---
 
-## 🚀 การติดตั้งและใช้งาน (Setup & Installation)
-
-1. **Clone โปรเจกต์:**
-   ```bash
-   git clone https://github.com/Pooh191/Pooh-Portfolio.git
-   ```
-
-2. **ตั้งค่า Firebase:**
-   - สร้างโปรเจกต์บน [Firebase Console](https://console.firebase.google.com/)
-   - เปิดใช้งาน Firestore Database และ Authentication
-   - นำ Config ของคุณไปใส่ในไฟล์ `js/main.js`
-
-3. **รันบนเครื่อง:**
-   - คุณสามารถใช้ **Live Server** บน VS Code หรือเปิดไฟล์ `index.html` โดยตรง
-
-4. **การ Deploy:**
-   ```bash
-   firebase deploy
-   ```
-
----
-
 ## 👨‍💻 พัฒนาโดย (Developed By)
 
 **นายธนากร แซ่จอง (พูห์)**
